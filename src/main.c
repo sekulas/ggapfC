@@ -3,8 +3,8 @@
 #include <stdlib.h>
 
 typedef struct elem { // do pliku graph.h
-    double wage;
-    int node;
+    double wage;    // domyslnie -1
+    int node;       // domyslnie -1
 } elem_t;
 
 void show_help() {
