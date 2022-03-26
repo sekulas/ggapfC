@@ -156,7 +156,7 @@ int main (int argc, char **argv) {
         // podejmij probe odczytu
         graph_arr = read_from_file(source_file); //reader
     } else // jeżeli nie podano pliku wejściowego
-        graph_arr = generate_graph(rows, columns, from_weight, to_weight); //generuje graf spójny 
+        graph_arr = generate_graph(rows, columns, from_weight, to_weight); // generuje graf spójny 
 
     if(graph_arr == NULL) {
         fprintf(stderr, "Fatal error: nie udalo sie stworzyc grafu!\n");
