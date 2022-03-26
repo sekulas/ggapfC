@@ -1,7 +1,7 @@
 #include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 typedef struct elem { // do pliku graph.h
     double wage;    // domyslnie -1
     int node;       // domyslnie -1
@@ -24,49 +24,108 @@ int main (int argc, char **argv) {
     double from_weight = 1.0;
     double to_weight = 10.0;
     double path_length;
+    int flags[10]; //Tablica przechowujaca dane o tym czy flaga sie pojawila
 
     FILE *in, *out;
     int nodes;
     elem_t **graph_arr;
 
-    while ((opt = getopt (argc, argv, "h::s::x::y::n::b:e:r::f::t::")) != -1) {
+    //HELP
+    if( argc == 2 && (!strcmp("-?", argv[1]) || !strcmp("-help", argv[1]) || !strcmp("--help", argv[1]))) {
+        show_help();
+        return 0;
+    }
+
+    /*
+        https://azrael.digipen.edu/~mmead/www/Courses/CS180/getopt.html
+        getopt quick guide:
+        ":" - taki znak po danej fladze znaczy, że dana flaga wymaga podania argumentu
+              jeżeli funkcja nie dostanie argumentu w wywala znak "?" - czyli wchodzi w default
+        brak czegokolwiek po literce znaczy, że nie potrzebuje ona zadnego argumentu - dana flaga aktywuje jakas funkcje
+    */
+
+    while ((opt = getopt (argc, argv, "hs:x:y:n:b:e:r:f:t:")) != -1) {
         switch (opt) {
             case 'h':
-                show_help(); 
+                show_help();
+                flags[0] = 1; 
                 break;
             case 's':
                 source_file = optarg;
+                //printf("source_file: %s\n", optarg);
+                flags[1] = 1;
                 break;
             case 'x':
                 columns = atoi(optarg);
+                //printf("columns: %d\n", columns);
+                flags[2] = 1;
                 break;
             case 'y':
                 rows = atoi(optarg);
+                //printf("rows: %d\n", rows);
+                flags[3] = 1;
                 break;
             case 'n':
                 subgraphs = atoi(optarg);
+                //printf("subgraphs: %d\n", subgraphs);
+                flags[4] = 1;
                 break;
             case 'b':
                 begin_node = atoi(optarg);
+                //printf("begin_node: %d\n", begin_node);
+                flags[5] = 1;
                 break;
             case 'e':
                 end_node = atoi(optarg);
+                //printf("end_node: %d\n", end_node);
+                flags[6] = 1;
                 break;
             case 'r':
                 result_file = optarg;
+                //printf("result_file: %s\n", optarg);
+                flags[7] = 1;
                 break;
             case 'f':
                 from_weight = atof(optarg);
+                //printf("from_weight: %g\n", from_weight);
+                flags[8] = 1;
                 break;
             case 't':
                 to_weight = atof(optarg);
+                //printf("to_weight: %g\n", to_weight);
+                flags[9] = 1;
                 break;
-            default:                  
+            default:
+                fprintf(stderr, "NIEPOPRAWIE UZYTA FLAGA LUB FLAGA NIE ISTNIEJE\nTutaj masz podrecznego helpa:\n\n");                  
                 show_help(); // albo wypisz error
                 exit (EXIT_FAILURE);
         }
     }
 
+    nodes = columns * rows;
+
+    //Nie podano wymaganych flag
+    if(!flags[5] || !flags[6]) {
+        fprintf(stderr, "NIE PODANO WYMAGANYCH FLAG -b i -e\n");
+        show_help();
+        return 1;
+    }
+    //Niepoprawne wagi
+    if( ( flags[8] || flags[9] ) && from_weight > to_weight ) {
+        fprintf(stderr, "NIEPRAWIDLOWY ZAKRES WAG\n");
+        show_help();
+        return 1;
+    }
+    //Niepoprawne subgraphy
+    if( flags[4] && ( subgraphs < 1 || subgraphs > (nodes / 2) ) ) {
+        fprintf(stderr, "NIE DA SIE PODZIELIC GRAFU NA TYLE SUBGRAPHOW\n");
+        show_help();
+        return 1;
+    }
+
+    /*
+        Funkcja lapie non option arguments
+    */
 	if( optind < argc ) {
 		fprintf( stderr, "\nBad parameters!\n" );
 		for( ; optind < argc; optind++ )
@@ -75,7 +134,7 @@ int main (int argc, char **argv) {
 		show_help();
 		exit( EXIT_FAILURE );
 	}
-    
+
     // !!!walidacja parametrów!!!
     // .... sprawdzenie ich sensownosci - zakresy itp
 
@@ -142,7 +201,7 @@ int main (int argc, char **argv) {
             znajdz sciezke
             zapisz do pliku
     */
-   
+
     for(int i = 0; i < nodes; i++) 
         free(graph_arr[i]);
     free(graph_arr);
