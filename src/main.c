@@ -2,10 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-typedef struct elem { // do pliku graph.h
-    double wage;    // domyslnie -1
-    int node;       // domyslnie -1
-} elem_t;
 
 void show_help() {
     fprintf(stderr, "!!!HELP!!!\n");
