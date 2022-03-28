@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "graph.h"
+
 void show_help() {
     fprintf(stderr, "!!!HELP!!!\n");
     return;
@@ -24,7 +26,7 @@ int main (int argc, char **argv) {
 
     FILE *in, *out;
     int nodes;
-    elem_t **graph_arr;
+    pair_t **graph_arr;
 
     //HELP
     if( argc == 2 && (!strcmp("-?", argv[1]) || !strcmp("-help", argv[1]) || !strcmp("--help", argv[1]))) {
