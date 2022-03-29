@@ -12,4 +12,6 @@ typedef struct PQ {
     int capacity;
 } pq_t;
 
+// add function declarations here
+
 #endif

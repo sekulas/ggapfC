@@ -7,4 +7,6 @@ typedef struct pair {
     int node;       // -1 by default
 } pair_t;
 
+// add function declarations here
+
 #endif
