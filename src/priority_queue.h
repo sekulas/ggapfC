@@ -18,6 +18,9 @@ typedef struct PQ {
 // returns poiter to initialized priority queue on success and NULL in other case
 pq_t * init_pq();
 
+// frees memory used by priority queue
+void free_pq(pq_t *);
+
 // expands pririty queue - reallocation mechanism
 // returns pointer to reallocated pq on success and NULL in other case
 pq_t * expand_pq(pq_t*);
@@ -30,10 +33,19 @@ pair_t get_from_pq(pq_t*);
 // returns 1 on success and 0 in the oter case
 int add_to_pq(pq_t*, double, int);
 
+// returns true (value > 0) when p1 < p2 and false in other case
+int is_less(pq_t*, int, int);
+
+// swaps p1 with p2
+void swapp(pq_t*, int, int);
+
 // moves element up to its right place
 void bubble_up(pq_t*);
 
 // moves element down to its right place
 void bubble_down(pq_t*);
+
+// shows pq
+void show_pq(pq_t*);
 
 #endif
