@@ -35,9 +35,10 @@ int queue_top(queue_p q) {
     return q->node;
 }
 
-//deletes first element from the queue
+//deletes first element from the queue, returns pointer to the second one
 queue * queue_pop(queue_p q) {
 
+    //only one element in the queue moment
     if(q->next == NULL) {
         free(q);
         return NULL;
