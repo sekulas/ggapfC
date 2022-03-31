@@ -96,7 +96,7 @@ int main (int argc, char **argv) {
                 flags[T] = 1;
                 break;
             default:
-                fprintf(stderr, "NIEPOPRAWIE UZYTA FLAGA LUB FLAGA NIE ISTNIEJE\nTutaj masz podrecznego helpa:\n\n");                  
+                fprintf(stderr, "Invalid usage of flag or used flag does not exist.\nSmall help for you:\n\n");                  
                 show_help(); // albo wypisz error
                 exit (EXIT_FAILURE);
         }
@@ -106,19 +106,19 @@ int main (int argc, char **argv) {
 
     //Nie podano wymaganych flag
     if(!flags[5] || !flags[6]) {
-        fprintf(stderr, "NIE PODANO WYMAGANYCH FLAG -b i -e\n");
+        fprintf(stderr, "Flags -b -e are necessary!\n");
         show_help();
         return 1;
     }
     //Niepoprawne wagi
     if( ( flags[8] || flags[9] ) && from_weight > to_weight ) {
-        fprintf(stderr, "NIEPRAWIDLOWY ZAKRES WAG\n");
+        fprintf(stderr, "Wrong wage range! Your input:\n from:%g to:%g \n", from_weight, to_weight);
         show_help();
         return 1;
     }
     //Niepoprawne subgraphy
     if( flags[4] && ( subgraphs < 1 || subgraphs > (nodes / 2) ) ) {
-        fprintf(stderr, "NIE DA SIE PODZIELIC GRAFU NA TYLE SUBGRAPHOW\n");
+        fprintf(stderr, "There is no option to divide this graph to %d subgraphs!\n", subgraphs);
         show_help();
         return 1;
     }
@@ -150,7 +150,7 @@ int main (int argc, char **argv) {
     if(source_file != NULL) {
         in = fopen(source_file, "r");
         if(in == NULL) {
-            fprintf(stderr, "Nie udalo sie otworzyc pliku wejsciowego!\n");
+            fprintf(stderr, "Cannot open source file!\n");
             return EXIT_FAILURE;
         }
         // podejmij probe odczytu
@@ -159,7 +159,7 @@ int main (int argc, char **argv) {
         graph_arr = generate_graph(rows, columns, from_weight, to_weight); // generuje graf spójny 
 
     if(graph_arr == NULL) {
-        fprintf(stderr, "Fatal error: nie udalo sie stworzyc grafu!\n");
+        fprintf(stderr, "Graph has not been created!\n");
         return EXIT_FAILURE;
     }
     
@@ -181,7 +181,7 @@ int main (int argc, char **argv) {
     if(result_file != NULL) {
         out = fopen(result_file, "w");
         if( out == NULL ) {
-            fprintf(stderr, "Nie udalo sie otworzyc pliku wyjsciowego!\n");
+            fprintf(stderr, "Cannot upen result file!\n");
             return EXIT_FAILURE;
         }
     } else // w innym wypadku wypisz na standardowe wyjscie
