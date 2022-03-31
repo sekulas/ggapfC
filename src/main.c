@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+#include "const.h"
 #include "graph.h"
 
 void show_help() {
@@ -46,52 +48,52 @@ int main (int argc, char **argv) {
         switch (opt) {
             case 'h':
                 show_help();
-                flags[0] = 1; 
+                flags[H] = 1; 
                 break;
             case 's':
                 source_file = optarg;
                 //printf("source_file: %s\n", optarg);
-                flags[1] = 1;
+                flags[S] = 1;
                 break;
             case 'x':
                 columns = atoi(optarg);
                 //printf("columns: %d\n", columns);
-                flags[2] = 1;
+                flags[X] = 1;
                 break;
             case 'y':
                 rows = atoi(optarg);
                 //printf("rows: %d\n", rows);
-                flags[3] = 1;
+                flags[Y] = 1;
                 break;
             case 'n':
                 subgraphs = atoi(optarg);
                 //printf("subgraphs: %d\n", subgraphs);
-                flags[4] = 1;
+                flags[N] = 1;
                 break;
             case 'b':
                 begin_node = atoi(optarg);
                 //printf("begin_node: %d\n", begin_node);
-                flags[5] = 1;
+                flags[B] = 1;
                 break;
             case 'e':
                 end_node = atoi(optarg);
                 //printf("end_node: %d\n", end_node);
-                flags[6] = 1;
+                flags[E] = 1;
                 break;
             case 'r':
                 result_file = optarg;
                 //printf("result_file: %s\n", optarg);
-                flags[7] = 1;
+                flags[R] = 1;
                 break;
             case 'f':
                 from_weight = atof(optarg);
                 //printf("from_weight: %g\n", from_weight);
-                flags[8] = 1;
+                flags[F] = 1;
                 break;
             case 't':
                 to_weight = atof(optarg);
                 //printf("to_weight: %g\n", to_weight);
-                flags[9] = 1;
+                flags[T] = 1;
                 break;
             default:
                 fprintf(stderr, "NIEPOPRAWIE UZYTA FLAGA LUB FLAGA NIE ISTNIEJE\nTutaj masz podrecznego helpa:\n\n");                  
