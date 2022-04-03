@@ -14,8 +14,11 @@ Errors prefixes for modules:
     9 - graph
 */
 
-#define PQ_FAILED_ALLOC     70
-#define PQ_FAILED_REALLOC   71
-#define PQ_IS_NULL          72
+#define PQ_FAILED_ALLOC         70
+#define PQ_FAILED_REALLOC       71
+#define PQ_IS_NULL              72
+
+#define GRAPH_FAILED_ALLOC      90
+#define ADJ_LIST_FAILED_ALLOC   91
 
 #endif
