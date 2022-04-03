@@ -1,6 +1,13 @@
-#ifndef _PRIORITY_QUEUE_H_
-#define _PRIORITY_QUEUE_H_
+#ifndef _QUEUE_H_
+#define _QUEUE_H_
 //queue base
+
+/* 
+konwencja w C jest taka ze przy zdefiniowanych typach daje sie _t
+tzn pasowaloby zamienic queue na queue_t i queue_p na np queue_ptr_t
+* poprawilem ifndef
+*/
+
 typedef struct node {
     int node;
     struct node * next;
