@@ -15,14 +15,14 @@ typedef struct PQ {
 // add function declarations here
 
 // initializes pq
-// returns poiter to initialized priority queue on success and NULL in other case
+// returns poiter to initialized priority queue on success and error code to shell in other casee
 pq_t * init_pq();
 
 // frees memory used by priority queue
 void free_pq(pq_t *);
 
 // expands pririty queue - reallocation mechanism
-// returns pointer to reallocated pq on success and NULL in other case
+// returns pointer to reallocated pq on success and error code to shell in other case
 pq_t * expand_pq(pq_t*);
 
 // polls and returns pair with the smallest weight from pq (root)
@@ -30,10 +30,10 @@ pq_t * expand_pq(pq_t*);
 pair_t get_from_pq(pq_t*);
 
 // adds pair to pq
-// returns 1 on success and 0 in the oter case
+// returns 1 on success and error code to shell in other case
 int add_to_pq(pq_t*, double, int);
 
-// returns true (value > 0) when p1 < p2 and false in other case
+// returns true (value > 0) when p1 < p2 and false (0) in other case
 int is_less(pq_t*, int, int);
 
 // swaps p1 with p2

@@ -1,22 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "priority_queue.h"
+#include "error_codes.h"
 
 // initializes pq
-// returns poiter to initialized priority queue on success and NULL in other case
+// returns poiter to initialized priority queue on success and error code to shell in other case
 pq_t * init_pq() {
     // priority queue structure allocation
     pq_t * pq = malloc(sizeof(pq_t));
     if(pq == NULL) {
         fprintf(stderr, "init_pq(): pq allocation failed\n");
-        return NULL;
+        exit(PQ_FAILED_ALLOC);
     }
 
     // array of pairs allocation
     pq->pairs = malloc(sizeof(pair_t) * PQ_START_SIZE);
     if(pq->pairs == NULL) {
         fprintf(stderr, "init_pq(): pairs allocation failed\n");
-        return NULL;
+        exit(PQ_FAILED_ALLOC);
     }
 
     pq->size = 0;
@@ -32,16 +33,15 @@ void free_pq(pq_t * pq) {
 }
 
 // expands pririty queue - reallocation mechanism
-// returns pointer to reallocated pq on success and NULL in other case
+// returns pointer to reallocated pq on success and error code to shell in other case
 pq_t * expand_pq(pq_t * pq) {
-    printf("reallocation!\n"); // for tests
+    //printf("reallocation!\n"); // for tests
 
     int new_capacity = pq->capacity + PQ_START_SIZE;
     pq->pairs = realloc(pq->pairs, sizeof(pair_t) * new_capacity);
     if(pq->pairs == NULL) {
         fprintf(stderr, "expand_pq(): reallocation failed\n");
-        free(pq);
-        return NULL;
+        exit(PQ_FAILED_REALLOC);
     }
 
     pq->capacity = new_capacity;
@@ -51,24 +51,25 @@ pq_t * expand_pq(pq_t * pq) {
 // polls and returns pair with the smallest weight from pq (root)
 // returns (-1, -1) when pq is empty
 pair_t get_from_pq(pq_t * pq) {
-    if(pq->size == 1) return (pair_t){-1.0, -1};
-    pair_t pair = pq->pairs[0];
-    pq->pairs[0] = pq->pairs[--pq->size];
+    pair_t taken_off = (pair_t){-1.0, -1};  // (pair_t){weitght, node}
+    if(pq->size == 1) return taken_off;     // when pq is empty return default values
+    taken_off = pq->pairs[0];               // take root element
+    pq->pairs[0] = pq->pairs[--pq->size];   // replace root by last element
 
-    bubble_down(pq);
+    bubble_down(pq);                        // bubble down new root
 
-    return pair;
+    return taken_off;
 }
 
 // adds pair to pq
-// returns 1 on success and 0 in the oter case
+// returns 1 on success and error code to shell in other case
 int add_to_pq(pq_t * pq, double weight, int node) {
     if(pq->size == pq->capacity)
         pq = expand_pq(pq);
 
     if(pq == NULL) {
         fprintf(stderr, "add_to_pq(): error: pq is NULL\n");
-        return 0;
+        exit(PQ_IS_NULL);
     }
 
     pq->pairs[pq->size].weight = weight;
@@ -131,6 +132,11 @@ void bubble_down(pq_t * pq) {
 // shows pq for tests
 // mechanism of showing pq diagram needs some improvements
 void show_pq(pq_t * pq) {
+    if(pq->size > 30) {
+        printf("show_pq(): pq too big to dispaly\n");
+        return;
+    }
+
     int spaces = 50;
     if(pq == NULL || pq->size == 0) {
         printf("show_pq(): priority queue is empty or NULL\n");

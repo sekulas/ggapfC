@@ -47,11 +47,8 @@ int main(int argc, char **argv) {
     printf("pq.size : %d, pq.capacity: %d\n", pq->size, pq->capacity);
     show_pq(pq);
 
-    // z testow ktore przeprowadzilem wynika ze na ogol dodadwanie do kolejki i sama kolejka
-    // dziala w sposob prawidlowy, ale przy wyciaganiu sortowanie nie zawsze dziala prawidlowo
-    // poprawie to w najblizszym czasie :)
-
-    // trzeba przetestowac valgrindem
+    // pq works correctly, observed issue was the result of an inaccurate display of the queue
+    // valgrind tests passed, no leaks possible
 
     free_pq(pq);
     return 0;
