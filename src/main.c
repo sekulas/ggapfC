@@ -1,3 +1,4 @@
+/* wersja-szkic niekompilowalna */
 #include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,9 +27,9 @@ int main (int argc, char **argv) {
     double path_length;
     int flags[10]; //Tablica przechowujaca dane o tym czy flaga sie pojawila
 
-    FILE *in, *out;
+    //FILE *in, *out; zamykamy to w konkretnych modulach
     int nodes;
-    pair_t **graph_arr;
+    pair_t **graph;
 
     //HELP
     if( argc == 2 && (!strcmp("-?", argv[1]) || !strcmp("-help", argv[1]) || !strcmp("--help", argv[1]))) {
@@ -140,34 +141,25 @@ int main (int argc, char **argv) {
 
     /* malocowanie listy sasiedztwa - do pliku graph.c
     nodes = columns * rows;
-    elem_t **graph_arr = malloc(sizeof(graph_arr) * nodes); // tablica n x 4
+    elem_t **graph = malloc(sizeof(graph) * nodes); // tablica n x 4
     
     for(int i = 0; i < nodes; i++) 
-        graph_arr[i] = malloc(sizeof(graph_arr[i]) * 4);
+        graph[i] = malloc(sizeof(graph[i]) * 4);
     */
 
-    // jeżeli podany jakiś plik wejściowy
-    if(source_file != NULL) {
-        in = fopen(source_file, "r");
-        if(in == NULL) {
-            fprintf(stderr, "Cannot open source file!\n");
-            return EXIT_FAILURE;
-        }
-        // podejmij probe odczytu
-        graph_arr = read_from_file(source_file); //reader
-    } else // jeżeli nie podano pliku wejściowego
-        graph_arr = generate_graph(rows, columns, from_weight, to_weight); // generuje graf spójny 
+    // if filename is given as parameter
+    if(source_file != NULL)
+        graph = read_from_file(source_file);
+    else
+        graph = generate_graph(rows, columns, from_weight, to_weight);
+    // the functions that generate the graph terminate the program when an error is encountered
+    // so no need to check if graph is NULL 
 
-    if(graph_arr == NULL) {
-        fprintf(stderr, "Graph has not been created!\n");
-        return EXIT_FAILURE;
-    }
-    
-    if(bfs(graph_arr, rows, columns) == 0) {                                        // sprawdzanie spojnosci grafu - zwraca 0 jezeli jest spojny 1 jesli jest nie spojny
+    if(bfs(graph, rows, columns) == 0) {                                        // sprawdzanie spojnosci grafu - zwraca 0 jezeli jest spojny 1 jesli jest nie spojny
         printf("Wczytany graf jest spojny.\n");
         if(subgraphs > 1) {
             printf("Graf zostanie podzielony na %d podgrafow\n", subgraphs);
-            splitter(graph_arr, rows, columns, subgraphs);                          // dzielenie grafu 
+            splitter(graph, rows, columns, subgraphs);                          // dzielenie grafu 
         } else 
             printf("Graf nie bedzie dzielony.\n");
     } else
@@ -175,7 +167,7 @@ int main (int argc, char **argv) {
         
 
     //!!!Sprawdzaj czy begin_node i end_node sa tym samym wtedy 0!!!
-    path_length = dijkstra(graph_arr, rows, columns, begin_node, end_node);         // odleglosci miedzy begin_node i end_node
+    path_length = dijkstra(graph, rows, columns, begin_node, end_node);         // odleglosci miedzy begin_node i end_node
     
     //jezeli plik wyjsciowy jest podany
     if(result_file != NULL) {
@@ -187,7 +179,7 @@ int main (int argc, char **argv) {
     } else // w innym wypadku wypisz na standardowe wyjscie
         out = stdout; 
     
-    writer(graph_arr, out);
+    writer(graph, out);
 
     /*
         jeżeli podany source_file
@@ -203,10 +195,10 @@ int main (int argc, char **argv) {
     */
 
     for(int i = 0; i < nodes; i++) 
-        free(graph_arr[i]);
-    free(graph_arr);
-    fclose(in);
-    fclose(out);
+        free(graph[i]);
+    free(graph);
+    //fclose(in);
+    //fclose(out);
 
     // !!!sprawdzic wycieki valgrindem!!!
 
