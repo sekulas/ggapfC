@@ -8,12 +8,22 @@ void show_graph(graph_t * graph, FILE * out) {
     // print number of rows and columns
     fprintf(out, "%d %d\n", graph->rows, graph->columns);
     for(int i = 0; i < graph->nodes; i++) {
-        for(int j = 0; j < 4; j++) {
+        for(int j = 0; j < ADJ_LIST_COLS; j++) {
             if(graph->edge[i][j].node == -1) 
                 continue; // when there is no edge - contour vertices
             fprintf(out, " %d:%g", graph->edge[i][j].node, graph->edge[i][j].weight);
         }
         fprintf(out, "\n");
+    }
+}
+
+// fills weights and nodes with default values
+void fill_with_default(graph_t * graph) {
+    for(int i = 0; i < graph->nodes; i++) {
+        for(int j = 0; j < ADJ_LIST_COLS; j++) {
+            graph->edge[i][j].node = DEFAULT_NODE;
+            graph->edge[i][j].weight = DEFAULT_WEIGHT;
+        }
     }
 }
 
@@ -91,6 +101,7 @@ graph_t * init_graph(int rows, int columns) {
     graph->rows = rows;
     graph->columns = columns;
     graph->nodes = nodes;
+    fill_with_default(graph);   // filling graph with default values
 
     return graph;
 }

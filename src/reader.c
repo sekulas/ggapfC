@@ -1,9 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
-
-#include "reader.h"
 #include "graph.h"
+#include "reader.h"
 #include "error_codes.h"
 
 // returns pointer to graph structure on success end error code to shell in other case
@@ -58,7 +57,7 @@ graph_t * read_from_file(char * filename) {
             if(tmp == LF) {
                 ++i;    // next node in adj list
                 j = 0;  // first neighbour of i node
-                //printf("\n");
+                //printf("\n"); // for tests
             }
         }
         ungetc(tmp, in);    // first character that is not a space
@@ -68,7 +67,10 @@ graph_t * read_from_file(char * filename) {
     return graph;
 }
 
+// main stands here only for tests
+// cc src/reader.c src/graph.c
 int main(int argc, char **argv) {
-    read_from_file("data/graph1");
+    graph_t * graph = read_from_file("data/graph1");
+    show_graph(graph, stdout);
     return 0;
 }
