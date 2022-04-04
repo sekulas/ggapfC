@@ -3,17 +3,19 @@
 #include "queue.h"
 
 //add node to the queue
-queue_p queue_add(queue_p q, int node) {
+queue_ptr_t queue_add(queue_ptr_t q, int node) {
     
     //new element allocation
-    queue_p new = malloc(sizeof(queue));
+    queue_ptr_t new = malloc(sizeof(queue_t));
     new->node = node;
+    new->next = NULL;
+    
     if(new == NULL) {
         fprintf(stderr, "queue_add(): 'new' allocation failed\n");
         return NULL;
     }
 
-    queue_p iterator = q;
+    queue_ptr_t iterator = q;
 
     //empty queue moment
     if(iterator == NULL) {
@@ -34,12 +36,12 @@ queue_p queue_add(queue_p q, int node) {
 }
 
 //returns top element from the queue
-int queue_top(queue_p q) {
+int queue_top(queue_ptr_t q) {
     return q->node;
 }
 
 //deletes first element from the queue, returns pointer to the second one
-queue_p queue_pop(queue_p q) {
+queue_ptr_t queue_ptr_top(queue_ptr_t q) {
 
     //only one element in the queue moment
     if(q->next == NULL) {
@@ -47,7 +49,7 @@ queue_p queue_pop(queue_p q) {
         return NULL;
     }
     
-    queue_p iterator = q->next;
+    queue_ptr_t iterator = q->next;
 
     free(q);
 
