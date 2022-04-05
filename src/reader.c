@@ -69,8 +69,8 @@ graph_t * read_from_file(char * filename) {
 
 // main stands here only for tests
 // cc src/reader.c src/graph.c
-int main(int argc, char **argv) {
+/*int main(int argc, char **argv) {
     graph_t * graph = read_from_file("data/graph1");
     show_graph(graph, stdout);
     return 0;
-}
+}*/

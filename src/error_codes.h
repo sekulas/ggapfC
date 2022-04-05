@@ -17,6 +17,8 @@ Errors prefixes for modules:
 #define READER_CANNOT_OPEN_SRC  20
 #define READER_WRONG_FORMAT     21
 
+#define DIJKSTRA_FAILED_ALLOC   50
+
 #define PQ_FAILED_ALLOC         70
 #define PQ_FAILED_REALLOC       71
 #define PQ_IS_NULL              72
