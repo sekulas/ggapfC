@@ -22,6 +22,6 @@ queue_ptr_t queue_add(queue_ptr_t q, int node);
 int queue_top(queue_ptr_t q);
 
 //deletes first element from the queue, returns pointer to the second one
-queue_ptr_t queue_ptr_top(queue_ptr_t q);
+queue_ptr_t queue_pop(queue_ptr_t q);
 
 #endif

@@ -8,7 +8,7 @@
 
 int main (int argc, char **argv) {
 
-    queue_p q = NULL;
+    queue_ptr_t q = NULL;
 
     for(int i = 0; i < argc; i++) {
         
