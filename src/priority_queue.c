@@ -48,11 +48,17 @@ pq_t * expand_pq(pq_t * pq) {
     return pq;
 }
 
+// returns true (1) when pq is empty
+int is_empty(pq_t * pq) {
+    if(pq->size == 0) return 1;
+    else return 0;
+}
+
 // polls and returns pair with the smallest weight from pq (root)
 // returns (-1, -1) when pq is empty
 pair_t get_from_pq(pq_t * pq) {
-    pair_t taken_off = (pair_t){-1.0, -1};  // (pair_t){weitght, node}
-    if(pq->size == 1) return taken_off;     // when pq is empty return default values
+    pair_t taken_off = (pair_t){-1.0, -1};  // (pair_t){weight, node}
+    if(is_empty(pq)) return taken_off;      // when pq is empty return default values
     taken_off = pq->pairs[0];               // take root element
     pq->pairs[0] = pq->pairs[--pq->size];   // replace root by last element
 

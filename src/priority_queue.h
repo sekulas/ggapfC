@@ -25,6 +25,9 @@ void free_pq(pq_t *);
 // returns pointer to reallocated pq on success and error code to shell in other case
 pq_t * expand_pq(pq_t*);
 
+// returns true (1) when pq is empty
+int is_empty(pq_t *);
+
 // polls and returns pair with the smallest weight from pq (root)
 // returns (-1, -1) when pq is empty
 pair_t get_from_pq(pq_t*);
