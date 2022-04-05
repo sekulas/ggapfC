@@ -6,8 +6,11 @@
 #define GRAPH_MIN_COLS  1       // min cols number
 #define GRAPH_MAX_ROWS  5000    // max rows number
 #define GRAPH_MAX_COLS  5000    // max cols number
+
 #define DEFAULT_WEIGHT  -1.0    // default weight for unused edge
 #define DEFAULT_NODE    -1      // default node number for unused edge
+
+#define GRAPH_MAX_NODES (GRAPH_MAX_ROWS * GRAPH_MAX_COLS)   // max nodes in graph
 
 // stores pairs (weight, node) used in Dijkstra algorithm and priority queue
 typedef struct pair {
