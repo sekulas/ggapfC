@@ -59,6 +59,14 @@ void validate_graph_size(int rows, int columns) {
     }
 }
 
+// frees memory used by graph
+void free_graph(graph_t * graph) {
+    for(int i = 0; i < graph->nodes; i++)
+        free(graph->edge[i]);
+    free(graph->edge);
+    free(graph);
+}
+
 // initializes graph
 // returns poiter to initialized graph on success and error code to shell in other case
 graph_t * init_graph(int rows, int columns) {

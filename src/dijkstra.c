@@ -50,13 +50,13 @@ void backtrace(double * distance, int * prev, int begin, int end) {
         prev_vertex = prev[current_vertex];
         weight = distance[current_vertex] - distance[prev_vertex];
 
-        printf("%5d <-%5d  =  %g\n", current_vertex, prev_vertex, weight);
+        printf("%5d <- %-5d  =  %g\n", current_vertex, prev_vertex, weight);
         current_vertex = prev_vertex;
         i++;
     }
 
     // additional info
-    printf("The shortest path leads through %d vertices\n\n", i);
+    printf("\nThe shortest path leads through %d vertices\n\n", i);
 }
 
 // finds shortest path betweent given vertices
@@ -141,6 +141,10 @@ double dijkstra(graph_t * graph, int begin, int end, int show_backtrace) {
 int main(int argc, char **argv) {
     graph_t * graph = read_from_file("data/graph1");
     //show_graph(graph, stdout);
+
     dijkstra(graph, atoi(argv[1]), atoi(argv[2]), 1);
+
+    free_graph(graph);
+
     return 0;
 }

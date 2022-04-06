@@ -35,6 +35,9 @@ void add_to_graph(graph_t *, int, int, int, double);
 // check if given graph size is correct
 void validate_graph_size(int, int);
 
+// frees memory used by graph
+void free_graph(graph_t *);
+
 // initializes graph
 // returns poiter to initialized graph on success and error code to shell in other case
 graph_t * init_graph(int, int);
