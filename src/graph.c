@@ -28,22 +28,33 @@ void fill_with_default(graph_t * graph) {
 }
 
 // adds node to adjacency list
-void add_to_graph(graph_t * graph, int i, int j, int node, double weight) {
-    // check if adj list indexes are correct
-    if(i >= graph->nodes || j >= 4) {
+// modify interface to more intelligent: void add_edge(graph_t * graph, int from, int to, double weight) 
+void add_edge(graph_t * graph, int from_node, int to_node, double weight) {
+    int i = 0; // iterator
+
+    // check if given node numbers are correct
+    if(from_node < 0 || from_node >= graph->nodes || to_node < 0 || to_node >= graph->nodes) {
         fprintf(stderr, "add_to_graph(): index out of range!\n");
         exit(GRAPH_OUT_OF_RANGE);
     }
 
-    // check if data read from file is correct
-    if(node >= graph->nodes || weight < 0.0) {
-        fprintf(stderr, "add_to_graph(): nodes out of rangE or negative weights!\n");
+    // check if weights read from file are correct
+    if(weight < 0.0) {
+        fprintf(stderr, "add_to_graph(): weight can not be negative!\n");
         exit(GRAPH_CORRUPTED_DATA);
     }
 
     // add edge to graph
-    graph->edge[i][j].node = node;
-    graph->edge[i][j].weight = weight;
+    while(graph->edge[from_node][i].node != DEFAULT_NODE && i < ADJ_LIST_COLS) 
+        i++;
+    
+    if(i < ADJ_LIST_COLS) {
+        graph->edge[from_node][i].node = to_node;
+        graph->edge[from_node][i].weight = weight;
+    } else {
+        fprintf(stderr, "add_to_graph(): weight can not be negative!\n");
+        exit(GRAPH_TOO_MUCH_EDGES);
+    }
 }
 
 // check if given graph size is correct
@@ -111,5 +122,28 @@ graph_t * init_graph(int rows, int columns) {
     graph->nodes = nodes;
     fill_with_default(graph);   // filling graph with default values
 
+    return graph;
+}
+
+// generates graph with the given parameters
+// returns pointer to graph structure on success end error code to shell in other case
+// does not provide validation of parameters!
+graph_t * generator(int rows, int columns, double from_weight, double to_weight) {
+    // parameters above should be validated in main.c
+
+    double weight;  // weight read from file
+    int i, j;       // indexes of current node in adj list
+    graph_t * graph;    // pointer to graph structure
+
+    //printf("%d %d\n", rows, columns); // for tests
+    graph = init_graph(rows, columns);
+
+    i = j = 0;
+    for(i = 0; i < graph->rows; i++) {
+        for(j = 0; j < graph->columns; j++) {
+            ;
+        }
+    }
+    
     return graph;
 }

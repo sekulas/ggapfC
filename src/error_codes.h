@@ -29,5 +29,6 @@ Errors prefixes for modules:
 #define GRAPH_WRONG_COL_NUMBER  93
 #define GRAPH_OUT_OF_RANGE      94
 #define GRAPH_CORRUPTED_DATA    95
+#define GRAPH_TOO_MUCH_EDGES    96
 
 #endif

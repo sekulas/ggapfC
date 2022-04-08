@@ -12,7 +12,7 @@ graph_t * read_from_file(char * filename) {
     int tmp;        // temp variable for reading characters
     int node;       // node read from file
     double weight;  // weight read from file
-    int i, j;       // indexes of current node in adj list
+    int i;          // index of current node in adj list
     graph_t * graph;    // pointer to graph structure
 
     FILE * in = fopen(filename, "r");
@@ -38,7 +38,7 @@ graph_t * read_from_file(char * filename) {
         if(tmp == LF) break;    // skipping until reaching a new line
     }
 
-    i = j = 0;
+    i = 0;
     while((tmp = fscanf(in, "%d:%lf", &node, &weight)) != EOF) {
         if(tmp != 2) {
             fprintf(stderr, "read_from_file(): wrong data format!\n");
@@ -47,18 +47,14 @@ graph_t * read_from_file(char * filename) {
 
         //printf("%d:%g ", node, weight); // for tests
 
-        // validates and adds values to graph
-        add_to_graph(graph, i, j++, node, weight);
+        // validate and add values to graph
+        add_edge(graph, i, node, weight);
 
         // skiping spaces between nodes
         // important for last pair in line
         while(isspace(tmp = fgetc(in))) {
             if(tmp == CR) tmp = fgetc(in);
-            if(tmp == LF) {
-                ++i;    // next node in adj list
-                j = 0;  // first neighbour of i node
-                //printf("\n"); // for tests
-            }
+            if(tmp == LF) ++i;    // next node in adj list
         }
         ungetc(tmp, in);    // first character that is not a space
     }

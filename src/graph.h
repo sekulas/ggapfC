@@ -27,19 +27,22 @@ typedef struct graph {
 } graph_t;
 
 // prints graph to chosen stream
-void show_graph(graph_t *, FILE *);
+void show_graph(graph_t * graph, FILE * out);
 
-// adds node to adjacency list
-void add_to_graph(graph_t *, int, int, int, double);
+// fills weights and nodes with default values
+void fill_with_default(graph_t * graph);
+
+// adds edge between nodes to adjacency list
+void add_edge(graph_t * graph, int from_node, int to_node, double weight);
 
 // check if given graph size is correct
-void validate_graph_size(int, int);
+void validate_graph_size(int rows, int columns);
 
 // frees memory used by graph
-void free_graph(graph_t *);
+void free_graph(graph_t * graph);
 
 // initializes graph
 // returns poiter to initialized graph on success and error code to shell in other case
-graph_t * init_graph(int, int);
+graph_t * init_graph(int rows, int columns);
 
 #endif
