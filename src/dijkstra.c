@@ -65,6 +65,11 @@ void backtrace(double * distance, int * prev, int begin, int end) {
 double dijkstra(graph_t * graph, int begin, int end, int show_backtrace) {
     
     // ??? checking if begin and end values are correct should happen here or in main.c ?
+
+    if(graph == NULL) {
+        fprintf(stderr, "dijkstra(): given graph is NULL!\n");
+        exit(DIJKSTRA_NULL_GRAPH);
+    }
     
     int i;          // iterator
     double result;  // shortest path between given vertices
@@ -137,7 +142,7 @@ double dijkstra(graph_t * graph, int begin, int end, int show_backtrace) {
     return result;
 }
 
-// main is here for tests
+/* main is here for tests
 int main(int argc, char **argv) {
     graph_t * graph = read_from_file("data/graph1");
     //show_graph(graph, stdout);
@@ -147,4 +152,4 @@ int main(int argc, char **argv) {
     free_graph(graph);
 
     return 0;
-}
+}*/

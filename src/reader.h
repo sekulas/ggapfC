@@ -1,6 +1,8 @@
 #ifndef _READER_H_
 #define _READER_H_
 
+#include "graph.h"
+
 #define CR      13  // carriage return
 #define LF      10  // line feed
 

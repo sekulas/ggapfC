@@ -1,6 +1,8 @@
 #ifndef _GRAPH_H_
 #define _GRAPH_H_
 
+#include <stdio.h>  // FILE
+
 #define ADJ_LIST_COLS   4       // every node has max 4 connections with others
 #define GRAPH_MIN_ROWS  1       // min rows number
 #define GRAPH_MIN_COLS  1       // min cols number
@@ -44,5 +46,13 @@ void free_graph(graph_t * graph);
 // initializes graph
 // returns poiter to initialized graph on success and error code to shell in other case
 graph_t * init_graph(int rows, int columns);
+
+// generates double value from given range with 2 decimal places
+double rand_from_range(double start, double stop);
+
+// generates graph with the given parameters
+// returns pointer to graph structure on success end error code to shell in other case
+// does not provide validation of parameters!
+graph_t * generator(int rows, int columns, double from_weight, double to_weight);
 
 #endif

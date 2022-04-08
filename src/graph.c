@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
+#include <math.h>   // note that math.h needs -lm flag while compilation
 #include "graph.h"
 #include "error_codes.h"
 
@@ -9,7 +11,7 @@ void show_graph(graph_t * graph, FILE * out) {
     fprintf(out, "%d %d\n", graph->rows, graph->columns);
     for(int i = 0; i < graph->nodes; i++) {
         for(int j = 0; j < ADJ_LIST_COLS; j++) {
-            if(graph->edge[i][j].node == -1) 
+            if(graph->edge[i][j].node == DEFAULT_NODE) 
                 continue; // when there is no edge - contour vertices
             fprintf(out, " %d:%g", graph->edge[i][j].node, graph->edge[i][j].weight);
         }
@@ -28,9 +30,8 @@ void fill_with_default(graph_t * graph) {
 }
 
 // adds node to adjacency list
-// modify interface to more intelligent: void add_edge(graph_t * graph, int from, int to, double weight) 
 void add_edge(graph_t * graph, int from_node, int to_node, double weight) {
-    int i = 0; // iterator
+    int i; // iterator
 
     // check if given node numbers are correct
     if(from_node < 0 || from_node >= graph->nodes || to_node < 0 || to_node >= graph->nodes) {
@@ -45,6 +46,7 @@ void add_edge(graph_t * graph, int from_node, int to_node, double weight) {
     }
 
     // add edge to graph
+    i = 0;
     while(graph->edge[from_node][i].node != DEFAULT_NODE && i < ADJ_LIST_COLS) 
         i++;
     
@@ -52,7 +54,7 @@ void add_edge(graph_t * graph, int from_node, int to_node, double weight) {
         graph->edge[from_node][i].node = to_node;
         graph->edge[from_node][i].weight = weight;
     } else {
-        fprintf(stderr, "add_to_graph(): weight can not be negative!\n");
+        fprintf(stderr, "add_to_graph(): too much edges from one node!\n");
         exit(GRAPH_TOO_MUCH_EDGES);
     }
 }
@@ -125,25 +127,52 @@ graph_t * init_graph(int rows, int columns) {
     return graph;
 }
 
+// generates double value from given range with 2 decimal places
+double rand_from_range(double start, double stop) {
+    double r;
+    r = start + ((double)rand() / (RAND_MAX / (stop - start))); // generate random weight from given range
+    r = round(r * 100.0) / 100;                                 // round to 2 decimal places
+    return r;
+}
+
 // generates graph with the given parameters
 // returns pointer to graph structure on success end error code to shell in other case
 // does not provide validation of parameters!
 graph_t * generator(int rows, int columns, double from_weight, double to_weight) {
     // parameters above should be validated in main.c
 
-    double weight;  // weight read from file
-    int i, j;       // indexes of current node in adj list
+    double new_weight;  // weight read from file
+    int i, j;           // iterators
+    int current;        // index of current node
+    int next_to, below; // indexes of adjacent nodes
+
     graph_t * graph;    // pointer to graph structure
 
     //printf("%d %d\n", rows, columns); // for tests
     graph = init_graph(rows, columns);
 
-    i = j = 0;
+    srand(time(NULL));
+
+    // generating without last row and col
     for(i = 0; i < graph->rows; i++) {
         for(j = 0; j < graph->columns; j++) {
-            ;
+            current = (i * graph->columns) + j; // count current index
+            next_to = current + 1;              // index of node which is next to current
+            below = current + graph->columns;   // index of node which is below current
+
+            if(j != graph->columns-1) {   // add edge to the vertex next to current
+                new_weight = rand_from_range(from_weight, to_weight);
+                add_edge(graph, current, next_to, new_weight);  // there
+                add_edge(graph, next_to, current, new_weight);  // and back
+            }
+
+            if(i != graph->rows-1) {    // add edge to the vertex below current
+                new_weight = rand_from_range(from_weight, to_weight);
+                add_edge(graph, current, below, new_weight);  // there
+                add_edge(graph, below, current, new_weight);  // and back
+            }
         }
     }
-    
+
     return graph;
 }
