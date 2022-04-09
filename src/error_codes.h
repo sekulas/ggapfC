@@ -19,6 +19,7 @@ Errors prefixes for modules:
 
 #define DIJKSTRA_FAILED_ALLOC   50
 #define DIJKSTRA_NULL_GRAPH     51
+#define DIJKSTRA_OUT_OF_RANGE   52
 
 #define PQ_FAILED_ALLOC         70
 #define PQ_FAILED_REALLOC       71
