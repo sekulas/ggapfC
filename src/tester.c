@@ -45,6 +45,7 @@ int main(int argc, char ** argv) {
             out = fopen(argv[6], "w");
             show_graph(graph, out);
             printf("saved to %s\n", argv[6]);
+            fclose(out);
         } else {
             printf("not saved\n");
         }
@@ -57,6 +58,7 @@ int main(int argc, char ** argv) {
             out = fopen(argv[3], "w");
             show_graphml(graph, out);
             printf("%s converted to %s\n",argv[2], argv[3]);
+            fclose(out);
         } else {
             printf("give me destination filename\n");
         }
@@ -65,5 +67,6 @@ int main(int argc, char ** argv) {
     // add bfs here or something
 
     free_graph(graph);
+
     return 0;
 }
