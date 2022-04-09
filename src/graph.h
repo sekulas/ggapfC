@@ -55,4 +55,8 @@ double rand_from_range(double start, double stop);
 // does not provide validation of parameters!
 graph_t * generator(int rows, int columns, double from_weight, double to_weight);
 
+// prints graph in graphml format for visualisation
+// https://graphonline.ru/en/
+void show_graphml(graph_t * graph, FILE * out);
+
 #endif

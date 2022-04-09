@@ -176,3 +176,54 @@ graph_t * generator(int rows, int columns, double from_weight, double to_weight)
 
     return graph;
 }
+
+// prints graph in graphml format for visualisation
+// https://graphonline.ru/en/
+void show_graphml(graph_t * graph, FILE * out) {
+    int current;
+    int posX, posY;
+    int space = 100;
+    int i, j;       // iterators
+
+    // print opening tags
+    fprintf(out, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+    fprintf(out, "<graphml>\n");
+    fprintf(out, "<graph id=\"Graph\" uidGraph=\"3\" uidEdge=\"10003\">\n");
+
+    // print list of nodes
+    posY = 0;
+    for(i = 0; i < graph->rows; i++) {
+        posX = 0;
+        for(j = 0; j < graph->columns; j++) {
+            current = (i * graph->columns) + j;
+            fprintf(
+                out,
+                "<node positionX=\"%d\" positionY=\"%d\" id=\"%d\" mainText=\"%d\" upText=\"\" size=\"30\" ></node>\n", 
+                posX, posY, current, current);
+
+            posX += space;
+        }
+        posY += space;
+    }
+
+    // print list of edges
+    for(i = 0; i < graph->nodes; i++) {
+        for(j = 0; j < ADJ_LIST_COLS; j++) {
+            if(graph->edge[i][j].node == DEFAULT_NODE) 
+                continue;   // when there is no edge - contour vertices
+            
+            if(graph->edge[i][j].node < i)
+                continue;   // when edge was already printed
+
+            fprintf(
+                out,
+                "<edge source=\"%d\" target=\"%d\" isDirect=\"false\" weight=\"%g\" useWeight=\"true\" id=\"%d\" text=\"\" "
+                "upText=\"\" arrayStyleStart=\"\" arrayStyleFinish=\"\" model_width=\"4\" model_type=\"0\" model_curvedValue=\"0.1\" ></edge>\n",
+                i, graph->edge[i][j].node, graph->edge[i][j].weight, graph->edge[i][j].node + graph->nodes);
+        }
+    }
+
+    // print closing tags
+    fprintf(out, "</graph>\n");
+    fprintf(out, "</graphml>\n");
+}
