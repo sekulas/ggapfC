@@ -4,9 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-
+#include "reader.h"
 #include "const.h"
 #include "graph.h"
+#include "bfs.h"
 
 void show_help() {
     fprintf(stderr, "!!!HELP!!!\n");
@@ -29,7 +30,7 @@ int main (int argc, char **argv) {
 
     //FILE *in, *out; zamykamy to w konkretnych modulach
     int nodes;
-    pair_t **graph;
+    graph_t * graph;
 
     //HELP
     if( argc == 2 && (!strcmp("-?", argv[1]) || !strcmp("-help", argv[1]) || !strcmp("--help", argv[1]))) {
@@ -155,7 +156,7 @@ int main (int argc, char **argv) {
     // the functions that generate the graph terminate the program when an error is encountered
     // so no need to check if graph is NULL 
 
-    if(bfs(graph, rows, columns) == 0) {                                        // sprawdzanie spojnosci grafu - zwraca 0 jezeli jest spojny 1 jesli jest nie spojny
+    if(bfs(graph, 0) == 0) {                                        // sprawdzanie spojnosci grafu - zwraca 0 jezeli jest spojny 1 jesli jest nie spojny
         printf("Wczytany graf jest spojny.\n");
         if(subgraphs > 1) {
             printf("Graf zostanie podzielony na %d podgrafow\n", subgraphs);
