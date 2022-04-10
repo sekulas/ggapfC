@@ -39,10 +39,16 @@ int bfs(graph_t * graph, int starting_node) {
 //function which jumps into a note (necessary for bfs)
 void jump_into(graph_t * graph, int starting_node, char * seen, queue_ptr_t q) {
 
-    for(int i = 0; i < ADJ_LIST_COLS; i++)          
-        if(graph->edge[starting_node][i].node != DEFAULT_NODE)
-            if(seen[graph->edge[starting_node][i].node] == UNSEEN_NODE)
-                q = queue_add(q, graph->edge[starting_node][i].node);
+    int adjective_node;
+
+    for(int i = 0; i < ADJ_LIST_COLS; i++) {
+
+        adjective_node = graph->edge[starting_node][i].node; 
+                
+        if(adjective_node != DEFAULT_NODE)
+            if(seen[adjective_node] == UNSEEN_NODE)
+                q = queue_add(q, adjective_node);
+    }
 
 }
 
