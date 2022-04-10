@@ -1,6 +1,8 @@
 #ifndef _BFS_H_
 #define _BFS_H_
+#include "queue.h"
 #include "graph.h"
+
 
 #define CONNECTED_GRAPH 0       //Connected Graph return value for bfs()
 #define NOT_CONNECTED_GRAPH 1   //Not Connected Graph return value for bfs()

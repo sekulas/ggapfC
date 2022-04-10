@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-
+#include "reader.h"
 #include "const.h"
 #include "graph.h"
 #include "bfs.h"
@@ -30,7 +30,7 @@ int main (int argc, char **argv) {
 
     //FILE *in, *out; zamykamy to w konkretnych modulach
     int nodes;
-    pair_t **graph;
+    graph_t * graph;
 
     //HELP
     if( argc == 2 && (!strcmp("-?", argv[1]) || !strcmp("-help", argv[1]) || !strcmp("--help", argv[1]))) {
@@ -151,8 +151,7 @@ int main (int argc, char **argv) {
     // if filename is given as parameter
     if(source_file != NULL)
         graph = read_from_file(source_file);
-    else
-        graph = generate_graph(rows, columns, from_weight, to_weight);
+  
     // the functions that generate the graph terminate the program when an error is encountered
     // so no need to check if graph is NULL 
 
