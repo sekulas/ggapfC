@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "queue.h"
+#include "error_codes.h"
 
 //add node to the queue
 queue_ptr_t queue_add(queue_ptr_t q, int node) {
@@ -12,7 +13,7 @@ queue_ptr_t queue_add(queue_ptr_t q, int node) {
     
     if(new == NULL) {
         fprintf(stderr, "queue_add(): 'new' allocation failed\n");
-        return NULL;
+        exit(Q_FAILED_ALLOC);
     }
 
     queue_ptr_t iterator = q;

@@ -15,6 +15,11 @@ int bfs(graph_t * graph, int starting_node) {
 
         //declaring an array which will store info about seen nodes
         char * seen = malloc(graph->nodes);      //allocking memory for array seen
+        if(seen == NULL) {
+            fprintf(stderr, "bfs(): 'seen' allocation failed");
+            exit(SEEN_FAILED_ALLOC);
+        }
+
         memset(seen, UNSEEN_NODE, graph->nodes); //setting every node as unseen
         seen[starting_node] = SEEN_NODE;         //setting starting node as seen
         q = queue_add( q, starting_node );       //adding starting node to queue
