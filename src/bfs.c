@@ -36,7 +36,7 @@ int bfs(graph_t * graph, int starting_node) {
 }
 
 
-//function which jumps into a note (necessary for bfs)
+//function which jumps into a node (necessary for bfs)
 void jump_into(graph_t * graph, int starting_node, char * seen, queue_ptr_t q) {
 
     int adjective_node;
@@ -44,7 +44,9 @@ void jump_into(graph_t * graph, int starting_node, char * seen, queue_ptr_t q) {
     for(int i = 0; i < ADJ_LIST_COLS; i++) {
 
         adjective_node = graph->edge[starting_node][i].node; 
-                
+
+        fprintf(stderr, "We are in %d, adding %d\n", starting_node, adjective_node);
+
         if(adjective_node != DEFAULT_NODE)
             if(seen[adjective_node] == UNSEEN_NODE)
                 q = queue_add(q, adjective_node);
