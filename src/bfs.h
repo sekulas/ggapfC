@@ -13,7 +13,7 @@
 int bfs (graph_t * graph, int node);
 
 //function which jumps into a note (necessary for bfs)
-void jump_into(graph_t * graph, int starting_node, queue_ptr_t q);
+void jump_into(graph_t * graph, int starting_node, char * seen, queue_ptr_t q);
 
 //returns 0 if graph is connected or 1 if graph is not connected
 int is_graph_connected(graph_t * graph, char * seen);

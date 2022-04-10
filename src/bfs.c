@@ -10,6 +10,7 @@
 //bfs - returns 0 if graphs is connected, 1 if not
 int bfs(graph_t * graph, int starting_node) {
 
+        fprintf(stderr, "BFS CZAS START!\n");
         //declaring queue for bfs
         queue_ptr_t q = NULL;
 
@@ -19,10 +20,13 @@ int bfs(graph_t * graph, int starting_node) {
         seen[starting_node] = SEEN_NODE;         //setting starting node as seen
         q = queue_add( q, starting_node );       //adding starting node to queue
 
+        fprintf(stderr, "Kolejeczko twoja kolej!\n");
         while( !queue_empty(q) ) {
+            
+            fprintf(stderr, "YOO!\n");
 
             seen[queue_top(q)] = SEEN_NODE;
-            jump_into( graph, queue_top(q), q);
+            jump_into( graph, queue_top(q), seen, q);
             q = queue_pop(q);
 
         }
@@ -33,11 +37,12 @@ int bfs(graph_t * graph, int starting_node) {
 
 
 //function which jumps into a note (necessary for bfs)
-void jump_into(graph_t * graph, int starting_node, queue_ptr_t q) {
+void jump_into(graph_t * graph, int starting_node, char * seen, queue_ptr_t q) {
 
     for(int i = 0; i < ADJ_LIST_COLS; i++)          
         if(graph->edge[starting_node][i].node != DEFAULT_NODE)
-            q = queue_add(q, graph->edge[starting_node][i].node);
+            if(seen[graph->edge[starting_node][i].node] == UNSEEN_NODE)
+                q = queue_add(q, graph->edge[starting_node][i].node);
 
 }
 
