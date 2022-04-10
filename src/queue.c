@@ -35,6 +35,13 @@ queue_ptr_t queue_add(queue_ptr_t q, int node) {
 
 }
 
+//returns info about queue being empty (1) or not (0)
+int queue_empty(queue_ptr_t q) {
+    if(q == NULL)
+        return QUEUE_EMPTY;
+    
+    return QUEUE_NOT_EMPTY;
+}
 //returns top element from the queue
 int queue_top(queue_ptr_t q) {
     return q->node;

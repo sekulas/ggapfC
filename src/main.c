@@ -7,6 +7,7 @@
 
 #include "const.h"
 #include "graph.h"
+#include "bfs.h"
 
 void show_help() {
     fprintf(stderr, "!!!HELP!!!\n");
@@ -155,31 +156,10 @@ int main (int argc, char **argv) {
     // the functions that generate the graph terminate the program when an error is encountered
     // so no need to check if graph is NULL 
 
-    if(bfs(graph, rows, columns) == 0) {                                        // sprawdzanie spojnosci grafu - zwraca 0 jezeli jest spojny 1 jesli jest nie spojny
+    if(bfs(graph, 0) == 0) {                                        // sprawdzanie spojnosci grafu - zwraca 0 jezeli jest spojny 1 jesli jest nie spojny
         printf("Wczytany graf jest spojny.\n");
-        if(subgraphs > 1) {
-            printf("Graf zostanie podzielony na %d podgrafow\n", subgraphs);
-            splitter(graph, rows, columns, subgraphs);                          // dzielenie grafu 
-        } else 
-            printf("Graf nie bedzie dzielony.\n");
     } else
         printf("Wczytany graf jest niespojny zatem podzial na podgrafy nie nastapi\n");
-        
-
-    //!!!Sprawdzaj czy begin_node i end_node sa tym samym wtedy 0!!!
-    path_length = dijkstra(graph, rows, columns, begin_node, end_node);         // odleglosci miedzy begin_node i end_node
-    
-    //jezeli plik wyjsciowy jest podany
-    if(result_file != NULL) {
-        out = fopen(result_file, "w");
-        if( out == NULL ) {
-            fprintf(stderr, "Cannot upen result file!\n");
-            return EXIT_FAILURE;
-        }
-    } else // w innym wypadku wypisz na standardowe wyjscie
-        out = stdout; 
-    
-    writer(graph, out);
 
     /*
         jeżeli podany source_file
@@ -193,10 +173,6 @@ int main (int argc, char **argv) {
             znajdz sciezke
             zapisz do pliku
     */
-
-    for(int i = 0; i < nodes; i++) 
-        free(graph[i]);
-    free(graph);
     //fclose(in);
     //fclose(out);
 
