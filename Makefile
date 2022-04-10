@@ -1,5 +1,5 @@
 all:
-	gcc src/*.c -lm
+	gcc src/main.c src/queue.c src/bfs.c src/reader.c src/graph.c -lm -ggdb
 
 testnsp1:
 	./a.out -s data/not_connected_graph1.txt -b 1 -e 2

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "error_codes.h"
 #include "reader.h"
 #include "const.h"
 #include "graph.h"
@@ -26,7 +27,7 @@ int main (int argc, char **argv) {
     double from_weight = 1.0;
     double to_weight = 10.0;
     double path_length;
-    int flags[10]; //Tablica przechowujaca dane o tym czy flaga sie pojawila
+    int flags; //variable cointaining info about used flags (bitoperations)
 
     //FILE *in, *out; zamykamy to w konkretnych modulach
     int nodes;
@@ -48,81 +49,81 @@ int main (int argc, char **argv) {
 
     while ((opt = getopt (argc, argv, "hs:x:y:n:b:e:r:f:t:")) != -1) {
         switch (opt) {
-            case 'h':
+            case HELP_FLAG:
                 show_help();
-                flags[H] = 1; 
+                flags += HELP_FLAG_BIT;
                 break;
-            case 's':
+            case SOURCE_FILE_FLAG:
                 source_file = optarg;
                 //printf("source_file: %s\n", optarg);
-                flags[S] = 1;
+                flags += SOURCE_FILE_FLAG_BIT;
                 break;
-            case 'x':
+            case COLUMNS_FLAG:
                 columns = atoi(optarg);
                 //printf("columns: %d\n", columns);
-                flags[X] = 1;
+                flags += COLUMNS_FLAG_BIT;
                 break;
-            case 'y':
+            case ROWS_FLAG:
                 rows = atoi(optarg);
                 //printf("rows: %d\n", rows);
-                flags[Y] = 1;
+                flags += ROWS_FLAG_BIT;
                 break;
-            case 'n':
+            case SUBGRAPHS_FLAG:
                 subgraphs = atoi(optarg);
                 //printf("subgraphs: %d\n", subgraphs);
-                flags[N] = 1;
+                flags += SUBGRAPHS_FLAG_BIT;
                 break;
-            case 'b':
+            case BEGIN_NODE_FLAG:
                 begin_node = atoi(optarg);
                 //printf("begin_node: %d\n", begin_node);
-                flags[B] = 1;
+                flags += BEGIN_NODE_FLAG_BIT;
                 break;
-            case 'e':
+            case END_NODE_FLAG:
                 end_node = atoi(optarg);
                 //printf("end_node: %d\n", end_node);
-                flags[E] = 1;
+                flags += END_NODE_FLAG_BIT;
                 break;
-            case 'r':
+            case RESULT_FILE_FLAG:
                 result_file = optarg;
                 //printf("result_file: %s\n", optarg);
-                flags[R] = 1;
+                flags += RESULT_FILE_FLAG_BIT;
                 break;
-            case 'f':
+            case FROM_WEIGHT_FLAG:
                 from_weight = atof(optarg);
                 //printf("from_weight: %g\n", from_weight);
-                flags[F] = 1;
+                flags += FROM_WEIGHT_FLAG_BIT;
                 break;
-            case 't':
+            case TO_WEIGHT_FLAG:
                 to_weight = atof(optarg);
                 //printf("to_weight: %g\n", to_weight);
-                flags[T] = 1;
+                flags += TO_WEIGHT_FLAG_BIT;
                 break;
             default:
                 fprintf(stderr, "Invalid usage of flag or used flag does not exist.\nSmall help for you:\n\n");                  
                 show_help(); // albo wypisz error
-                exit (EXIT_FAILURE);
+                exit (INVALID_FLAG);
         }
     }
 
     nodes = columns * rows;
 
     //Nie podano wymaganych flag
-    if(!flags[5] || !flags[6]) {
+    if(!(flags & BEGIN_NODE_FLAG_BIT) || !(flags & END_NODE_FLAG_BIT)) {
         fprintf(stderr, "Flags -b -e are necessary!\n");
         show_help();
-        return 1;
+        exit(LACK_OF_B_OR_E_FLAG);
     }
     //Niepoprawne wagi
-    if( ( flags[8] || flags[9] ) && from_weight > to_weight ) {
+    if( ((flags & FROM_WEIGHT_FLAG_BIT) || (flags & TO_WEIGHT_FLAG_BIT)) && from_weight > to_weight ) {
         fprintf(stderr, "Wrong wage range! Your input:\n from:%g to:%g \n", from_weight, to_weight);
         show_help();
-        return 1;
+        exit(WRONG_WAGES);
     }
     //Niepoprawne subgraphy
-    if( flags[4] && ( subgraphs < 1 || subgraphs > (nodes / 2) ) ) {
+    if( (flags & SUBGRAPHS_FLAG_BIT) && ( subgraphs < 1 || subgraphs > (nodes / 2) ) ) {
         fprintf(stderr, "There is no option to divide this graph to %d subgraphs!\n", subgraphs);
         show_help();
-        return 1;
+        exit(CANNOT_DIVIDE);
     }
 
     /*
@@ -134,7 +135,7 @@ int main (int argc, char **argv) {
 			fprintf( stderr, "\t\"%s\"\n", argv[optind] );
 		fprintf( stderr, "\n" );
 		show_help();
-		exit( EXIT_FAILURE );
+		exit( BAD_PARAMETERS );
 	}
 
     // !!!walidacja parametrów!!!
@@ -154,17 +155,17 @@ int main (int argc, char **argv) {
     else
         graph = generate_graph(rows, columns, from_weight, to_weight);
     // the functions that generate the graph terminate the program when an error is encountered
-    // so no need to check if graph is NULL 
+    // so no need to check if graph is NULL    
 
     if(bfs(graph, 0) == 0) {                                        // sprawdzanie spojnosci grafu - zwraca 0 jezeli jest spojny 1 jesli jest nie spojny
-        printf("Wczytany graf jest spojny.\n");
+        printf("Graph is connected!\n");
         if(subgraphs > 1) {
-            printf("Graf zostanie podzielony na %d podgrafow\n", subgraphs);
-            splitter(graph, rows, columns, subgraphs);                          // dzielenie grafu 
+            printf("Graph will be divided to %d subgraphs\n", subgraphs);
+                splitter(graph, rows, columns, subgraphs);                          // dzielenie grafu 
         } else 
-            printf("Graf nie bedzie dzielony.\n");
+            printf("Graph cannot be divided.\n");
     } else
-        printf("Wczytany graf jest niespojny zatem podzial na podgrafy nie nastapi\n");
+        printf("Graph is not connected - it will not be divided to subgraphs.\n");
         
 
     //!!!Sprawdzaj czy begin_node i end_node sa tym samym wtedy 0!!!
@@ -174,8 +175,8 @@ int main (int argc, char **argv) {
     if(result_file != NULL) {
         out = fopen(result_file, "w");
         if( out == NULL ) {
-            fprintf(stderr, "Cannot upen result file!\n");
-            return EXIT_FAILURE;
+            fprintf(stderr, "Cannot open result file!\n");
+            exit(CANNOT_ACCESS_OUT);
         }
     } else // w innym wypadku wypisz na standardowe wyjscie
         out = stdout; 
@@ -198,8 +199,8 @@ int main (int argc, char **argv) {
     for(int i = 0; i < nodes; i++) 
         free(graph[i]);
     free(graph);
-    //fclose(in);
-    //fclose(out);
+    fclose(in);
+    fclose(out);
 
     // !!!sprawdzic wycieki valgrindem!!!
 

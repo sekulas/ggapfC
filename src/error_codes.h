@@ -14,6 +14,13 @@ Errors prefixes for modules:
     9 - graph
 */
 
+#define INVALID_FLAG            10
+#define LACK_OF_B_OR_E_FLAG     11
+#define WRONG_WAGES             12
+#define CANNOT_DIVIDE           13
+#define BAD_PARAMETERS          14
+#define CANNOT_ACCESS_OUT       15
+
 #define READER_CANNOT_OPEN_SRC  20
 #define READER_WRONG_FORMAT     21
 
