@@ -10,7 +10,6 @@
 //bfs - returns 0 if graphs is connected, 1 if not
 int bfs(graph_t * graph, int starting_node) {
 
-        fprintf(stderr, "BFS CZAS START!\n");
         //declaring queue for bfs
         queue_ptr_t q = NULL;
 
@@ -20,14 +19,12 @@ int bfs(graph_t * graph, int starting_node) {
         seen[starting_node] = SEEN_NODE;         //setting starting node as seen
         q = queue_add( q, starting_node );       //adding starting node to queue
 
-        fprintf(stderr, "Kolejeczko twoja kolej!\n");
+        //bfs algorithm
         while( !queue_empty(q) ) {
             
-            fprintf(stderr, "YOO!\n");
-
-            seen[queue_top(q)] = SEEN_NODE;
-            jump_into( graph, queue_top(q), seen, q);
-            q = queue_pop(q);
+            seen[queue_top(q)] = SEEN_NODE;             //mark current node as seen
+            jump_into( graph, queue_top(q), seen, q);   //look for neighbours
+            q = queue_pop(q);                           //pop current node from queue
 
         }
 
@@ -39,22 +36,22 @@ int bfs(graph_t * graph, int starting_node) {
 //function which jumps into a node (necessary for bfs)
 void jump_into(graph_t * graph, int starting_node, char * seen, queue_ptr_t q) {
 
-    int adjective_node;
+    int adjective_node; //it's gona store value of adjective node
 
     for(int i = 0; i < ADJ_LIST_COLS; i++) {
 
         adjective_node = graph->edge[starting_node][i].node; 
 
-        fprintf(stderr, "We are in %d, adding %d\n", starting_node, adjective_node);
-
-        if(adjective_node != DEFAULT_NODE)
-            if(seen[adjective_node] == UNSEEN_NODE)
-                q = queue_add(q, adjective_node);
+        if(adjective_node != DEFAULT_NODE)          //if neighbour exist
+            if(seen[adjective_node] == UNSEEN_NODE) //if neighbour has not been visited
+                q = queue_add(q, adjective_node);   //add it to queue
     }
 
 }
 
 //returns 0 if graph is connected or 1 if graph is not connected
+//actually it's looking if in array seen exist any unseen node if yes then
+//graph is not connected otherwise it's connected
 int is_graph_connected(graph_t * graph, char * seen) {
 
     for(int i = 0; i < graph->nodes; i++) {
