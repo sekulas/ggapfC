@@ -7,6 +7,10 @@
 #define NOT_EDGE_NODE   0
 #define SPLIT_MODE      1
 #define NOT_SPLIT_MODE  0
+#define UP  0
+#define RIGHT 1
+#define DOWN 2
+#define LEFT  3 
 
 //splits our graphs
 void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int starting_node, int end_node);

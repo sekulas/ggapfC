@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "graph.h"
 #include "reader.h"
 #include "dijkstra.h"
@@ -33,6 +34,8 @@ int main(int argc, char ** argv) {
         show_help();
         return 1;
     }
+
+    srand(time(NULL));
     
     graph_t * graph = NULL;
     FILE * out = NULL;

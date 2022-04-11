@@ -9,6 +9,45 @@
 
 void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int starting_node, int end_node) {
     
+    int rows = graph->rows;
+    int columns = graph->columns;
+
+    for(int i = 0; i < rows * columns; i++)
+        fprintf(stderr, "prev[%d] = %d\n", i, primary_prev[i]);
+
+    //our primary_prev table contains ancestors, so we should start from the end
+    //reversing start and end
+    int current_node = end_node;
+    int following_node;
+    int e_node = starting_node;
+
+    while( current_node != end_node ) {
+
+    }
+
+
+
+    exit(0);
+
+}
+
+int direction( int rows, int columns, int current_node, int following_node ) {
+
+
+
+    if( following_node == ( current_node - columns ) )
+        return UP;
+    
+    if( following_node == ( current_node + 1 ) )
+        return RIGHT;
+    
+    if( following_node == ( current_node + columns ) )
+        return DOWN;
+    
+    if( following_node == ( current_node - 1 ) )
+        return LEFT;
+
+
 }
 
 //returns info about node ( is it on the edge or not )
