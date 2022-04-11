@@ -24,6 +24,8 @@ Errors prefixes for modules:
 #define READER_CANNOT_OPEN_SRC  20
 #define READER_WRONG_FORMAT     21
 
+#define WRITER_CANNOT_CREATE_FILE 40
+
 #define DIJKSTRA_FAILED_ALLOC   50
 #define DIJKSTRA_NULL_GRAPH     51
 #define DIJKSTRA_OUT_OF_RANGE   52

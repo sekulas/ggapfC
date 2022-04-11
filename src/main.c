@@ -171,17 +171,9 @@ int main (int argc, char **argv) {
     //!!!Sprawdzaj czy begin_node i end_node sa tym samym wtedy 0!!!
     path_length = dijkstra(graph, rows, columns, begin_node, end_node);         // odleglosci miedzy begin_node i end_node
     
-    //jezeli plik wyjsciowy jest podany
-    if(result_file != NULL) {
-        out = fopen(result_file, "w");
-        if( out == NULL ) {
-            fprintf(stderr, "Cannot open result file!\n");
-            exit(CANNOT_ACCESS_OUT);
-        }
-    } else // w innym wypadku wypisz na standardowe wyjscie
-        out = stdout; 
-    
-    writer(graph, out);
+    // print graph to result_file
+    // if result_file is NULL print on stdout
+    save_to_file(graph, result_file);
 
     /*
         jeżeli podany source_file

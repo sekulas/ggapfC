@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "reader.h"
+#include "writer.h"
 #include "dijkstra.h"
 
 /* USAGE:
-    cc src/tester.c src/reader.c src/dijkstra.c src/priority_queue.c src/graph.c -lm
+    cc src/tester.c src/reader.c src/writer.c src/dijkstra.c src/priority_queue.c src/graph.c -lm
     ./a.out <mode> <params..>
     ./a.out r filename begin_node end_node                  - reads and shows graph from file and finds shortest path
     ./a.out w rows cols from_weight to_weight filename      - generates graph with given params
@@ -42,10 +43,8 @@ int main(int argc, char ** argv) {
     if(argv[1][0] == 'w') {
         graph = generator(atoi(argv[2]), atoi(argv[3]), atof(argv[4]), atof(argv[5]));
         if(argc > 5) {
-            out = fopen(argv[6], "w");
-            show_graph(graph, out);
+            save_to_file(graph, argv[6]);
             printf("saved to %s\n", argv[6]);
-            fclose(out);
         } else {
             printf("not saved\n");
         }
