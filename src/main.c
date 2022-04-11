@@ -48,52 +48,52 @@ int main (int argc, char **argv) {
         switch (opt) {
             case HELP_FLAG:
                 show_help();
-                flags += HELP_FLAG_BIT;
+                flags |= HELP_FLAG_BIT;
                 break;
             case SOURCE_FILE_FLAG:
                 source_file = optarg;
                 //printf("source_file: %s\n", optarg);
-                flags += SOURCE_FILE_FLAG_BIT;
+                flags |= SOURCE_FILE_FLAG_BIT;
                 break;
             case COLUMNS_FLAG:
                 columns = atoi(optarg);
                 //printf("columns: %d\n", columns);
-                flags += COLUMNS_FLAG_BIT;
+                flags |= COLUMNS_FLAG_BIT;
                 break;
             case ROWS_FLAG:
                 rows = atoi(optarg);
                 //printf("rows: %d\n", rows);
-                flags += ROWS_FLAG_BIT;
+                flags |= ROWS_FLAG_BIT;
                 break;
             case SUBGRAPHS_FLAG:
                 subgraphs = atoi(optarg);
                 //printf("subgraphs: %d\n", subgraphs);
-                flags += SUBGRAPHS_FLAG_BIT;
+                flags |= SUBGRAPHS_FLAG_BIT;
                 break;
             case BEGIN_NODE_FLAG:
                 begin_node = atoi(optarg);
                 //printf("begin_node: %d\n", begin_node);
-                flags += BEGIN_NODE_FLAG_BIT;
+                flags |= BEGIN_NODE_FLAG_BIT;
                 break;
             case END_NODE_FLAG:
                 end_node = atoi(optarg);
                 //printf("end_node: %d\n", end_node);
-                flags += END_NODE_FLAG_BIT;
+                flags |= END_NODE_FLAG_BIT;
                 break;
             case RESULT_FILE_FLAG:
                 result_file = optarg;
                 //printf("result_file: %s\n", optarg);
-                flags += RESULT_FILE_FLAG_BIT;
+                flags |= RESULT_FILE_FLAG_BIT;
                 break;
             case FROM_WEIGHT_FLAG:
                 from_weight = atof(optarg);
                 //printf("from_weight: %g\n", from_weight);
-                flags += FROM_WEIGHT_FLAG_BIT;
+                flags |= FROM_WEIGHT_FLAG_BIT;
                 break;
             case TO_WEIGHT_FLAG:
                 to_weight = atof(optarg);
                 //printf("to_weight: %g\n", to_weight);
-                flags += TO_WEIGHT_FLAG_BIT;
+                flags |= TO_WEIGHT_FLAG_BIT;
                 break;
             default:
                 fprintf(stderr, "Invalid usage of flag or used flag does not exist.\nSmall help for you:\n\n");                  
@@ -193,6 +193,11 @@ void show_help() {
         "\t  Generates a [rows] x [columns] size undirected graph with random weighted edges in range <[from_weight];[to_weight]>\n"
         "\t  Splits it to [subgraphs] subgraphs (when specified)\n"
         "\t  Finds the shortest path using Dijkstras algorithm from [begin_node] to [end_node]\n"
-        "\t  Saves graph in [result_file] if it is specified or prints on stdout\n"
+        "\t  Saves graph in [result_file] if it is specified or prints on stdout\n\n"
+        "\t2. Examples:\n"
+        "\t./ggapf -x 100 -y 200 -f 0 -t 10 -n 1 -b 0 -e 37 -r tmp\n"
+        "\t  - generates 100x200 graph with weights from range [0;10], finds shortest path between nodes 0 and 37, saves graph into tmp\n"
+        "\t./ggapf -s tmp -n 3 -b 0 -e 39 -r tmp\n"
+        "\t  - reads graph from tmp, if it is connected splits it to 3 subgraphs, finds shortest path between nodes 0 and 39, saves graph into tmp1"
     );
 }
