@@ -6,15 +6,15 @@
 #include "queue.h"
 #include "error_codes.h"
 #include "bfs.h"
-
+#include "splitter.h"
 //bfs - returns 0 if graphs is connected, 1 if not
-int bfs(graph_t * graph, int starting_node) {
+int bfs(graph_t * graph, int starting_node, int mode, char * seen) {
 
         //declaring queue for bfs
         queue_ptr_t q = NULL;
 
         //declaring an array which will store info about seen nodes
-        char * seen = malloc(graph->nodes);      //allocking memory for array seen
+        seen = malloc(graph->nodes);      //allocking memory for array seen
         if(seen == NULL) {
             fprintf(stderr, "bfs(): 'seen' allocation failed");
             exit(SEEN_FAILED_ALLOC);
@@ -33,7 +33,7 @@ int bfs(graph_t * graph, int starting_node) {
 
         }
 
-        return is_graph_connected( graph, seen );
+        return is_graph_connected( graph, seen, mode );
         
 }
 
@@ -57,7 +57,7 @@ void jump_into(graph_t * graph, int starting_node, char * seen, queue_ptr_t q) {
 //returns 0 if graph is connected or 1 if graph is not connected
 //actually it's looking if in array seen exist any unseen node if yes then
 //graph is not connected otherwise it's connected
-int is_graph_connected(graph_t * graph, char * seen) {
+int is_graph_connected(graph_t * graph, char * seen, int mode) {
 
     for(int i = 0; i < graph->nodes; i++) {
         
@@ -67,8 +67,9 @@ int is_graph_connected(graph_t * graph, char * seen) {
         }
 
     }
-
-    free(seen);
+    //if we are in a SPLIT_MODE we need seen table
+    if(mode != SPLIT_MODE)
+        free(seen);
     return CONNECTED_GRAPH;
 
 }
