@@ -73,7 +73,7 @@ int main(int argc, char ** argv) {
             out = fopen(argv[3], "w");
 
             for(int i = 0; i < atoi(argv[4]); i++) {
-                //TUTAJ ZABAWA DIJKSTRA AZ ZNAJDZIESZ GITGUT SCIEZKE
+                dijkstra(graph, atoi(argv[3]), atoi(argv[4]), 1, to_split, TO_SPLIT);
                 splitter(graph);
             }
 
