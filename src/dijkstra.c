@@ -28,10 +28,10 @@ void backtrace(double * distance, int * prev, int begin, int end) {
 
     // show shortest path or info that there is no shortest path
     if(distance[end] >= FLT_MAX) {
-        printf("Shortest path = INFINITY\nThere is no path between given vertices\n");
+        printf("\nnShortest path = INFINITY\nThere is no path between given vertices\n");
         return;
     } else 
-        printf("Shortest path = %g\n", distance[end]);
+        printf("\nShortest path = %g\n", distance[end]);
 
     // show vertices thorugh shortest path leads by
     // backtracing by prev array

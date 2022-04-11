@@ -11,10 +11,7 @@
 #include "bfs.h"
 #include "dijkstra.h"
 
-void show_help() {
-    fprintf(stderr, "!!!HELP!!!\n");
-    return;
-}
+void show_help();
 
 int main (int argc, char **argv) {
     int     opt;
@@ -152,7 +149,7 @@ int main (int argc, char **argv) {
             printf("Graph will be divided to %d subgraphs\n", subgraphs);
                 //splitter(graph, rows, columns, subgraphs);                          // dzielenie grafu 
         } else 
-            printf("Graph cannot be divided.\n");
+            printf("Graph will not be divided.\n");
     } else
         printf("Graph is not connected - it will not be divided to subgraphs.\n");
         
@@ -181,4 +178,21 @@ int main (int argc, char **argv) {
     // !!!sprawdzic wycieki valgrindem!!!
 
     return 0;
+}
+
+void show_help() {
+    printf(
+        "Ggapf works in two modes:\n"
+        "\t1. On given graph:\n\n"
+        "\t ./ggapf -s source_file -n subgraphs -b begin_node -e end_node -r result_file\n\n"
+        "\t  Tries to open [source_file], when graph is connected splits is to [subgraphs] subgraphs\n"
+        "\t  Finds the shortest path using Dijkstras algorithm from [begin_node] to [end_node]\n"
+        "\t  Saves graph in [result_file] if it is specified or prints on stdout\n\n"
+        "\t2. Generates new graph:\n\n"
+        "\t ./ggapf -x rows -y columns -f from_weight -t to_weight -n subgraphs -b begin_node -e end_node -r result_file\n\n"
+        "\t  Generates a [rows] x [columns] size undirected graph with random weighted edges in range <[from_weight];[to_weight]>\n"
+        "\t  Splits it to [subgraphs] subgraphs (when specified)\n"
+        "\t  Finds the shortest path using Dijkstras algorithm from [begin_node] to [end_node]\n"
+        "\t  Saves graph in [result_file] if it is specified or prints on stdout\n"
+    );
 }
