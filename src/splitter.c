@@ -19,18 +19,98 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
     //reversing start and end
     int current_node = end_node;
     int following_node;
+    int way;
     int e_node = starting_node;
+    int mode = EDGE_CASE;
 
-    while( current_node != end_node ) {
-
+    //we are on the right edge or top edge case
+    while( current_node != e_node ) {
+        if( ((current_node % columns) == (columns - 1)) || ((current_node < columns)) ) {
+            fprintf(stderr, "no elo\n");
+            current_node = primary_prev[current_node];
+        }
+        else {
+            fprintf(stderr, "~ NORMAL CASE ~\n");
+            mode = NORMAL_CASE;
+            break;
+        }
     }
 
 
 
-    exit(0);
+    if( mode == NORMAL_CASE ) {
+
+        for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
+            if( graph->edge[current_node][i].node != primary_prev[current_node] ) {
+                fprintf(stderr, "START: Wyciumkano: %d\n", graph->edge[current_node][i].node );
+                graph->edge[current_node][i].node = DEFAULT_NODE;
+                graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
+            }
+        } 
+    
+        while( current_node != e_node ) {
+            
+            following_node = primary_prev[current_node];
+
+            //break lineas neearby starting position
+
+
+            way = direction( rows, columns, current_node, following_node );
+
+            if( way == UP ) {
+                //looking for the right connection to break
+                for( int i = 0; i < ADJ_LIST_COLS; i++ )
+                    if( graph->edge[current_node][i].node == current_node + 1 ) { 
+                        graph->edge[current_node][i].node = DEFAULT_NODE;
+                        graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
+                        fprintf(stderr, "UP: Wyciumkano: %d\n", current_node + 1);
+                    }
+
+            }
+            else if( way == RIGHT ) {
+                //looking for the down connection to break
+                for( int i = 0; i < ADJ_LIST_COLS; i++ )
+                    if( graph->edge[current_node][i].node == current_node + columns ) {
+                        graph->edge[current_node][i].node = DEFAULT_NODE;
+                        graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
+                        fprintf(stderr, "RIGHT: Wyciumkano: %d\n", current_node + columns);
+                    }
+
+
+            }
+            else if( way == DOWN ) {
+                //looking for the down connection to break
+                for( int i = 0; i < ADJ_LIST_COLS; i++ )
+                    if( graph->edge[current_node][i].node == current_node - 1) {
+                        graph->edge[current_node][i].node = DEFAULT_NODE;
+                        graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
+                        fprintf(stderr, "DOWN: Wyciumkano: %d\n", current_node - 1);
+                    }
+                        
+            }
+            else if( way == LEFT ) {
+                //looking for the down connection to break
+                for( int i = 0; i < ADJ_LIST_COLS; i++ )
+                    if( graph->edge[current_node][i].node == current_node - columns ) {
+                        graph->edge[current_node][i].node = DEFAULT_NODE;
+                        graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
+                        fprintf(stderr, "LEFT: Wyciumkano: %d\n", current_node - columns);
+                    }
+                        
+            }
+            
+            current_node = primary_prev[current_node];
+        }
+    }
+    else {
+        while( current_node != e_node ) {
+            fprintf(stderr, "~~~~~~~~~~~~~~~~~EDGE CASE ~~~~~~~~~~~~~~~~~~~~\n");
+        }
+    }
 
 }
 
+//direction guesser
 int direction( int rows, int columns, int current_node, int following_node ) {
 
 
