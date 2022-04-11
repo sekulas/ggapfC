@@ -8,6 +8,7 @@
 
 /* USAGE:
     cc src/tester.c src/reader.c src/dijkstra.c src/priority_queue.c src/graph.c -lm
+    cc src/tester.c src/reader.c src/writer.c src/dijkstra.c src/priority_queue.c src/graph.c -o tester -lm
     ./a.out <mode> <params..>
     ./a.out r filename begin_node end_node                  - reads and shows graph from file and finds shortest path
     ./a.out w rows cols from_weight to_weight filename      - generates graph with given params
