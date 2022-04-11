@@ -7,6 +7,7 @@
 #include "priority_queue.h"
 #include "reader.h"
 #include "dijkstra.h"
+#include "splitter.h"
 
 // for tests only
 void print_distances_arr(double * arr, int n) {

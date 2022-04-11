@@ -90,7 +90,8 @@ int main(int argc, char ** argv) {
 
                     if(seen[end_node] == SEEN_NODE) {                       //if they're connected
                         dijkstra(graph, atoi(argv[3]), atoi(argv[4]), 1, prev, SPLIT_MODE); //look for the shortest path
-                        splitter(graph, prev);                              //split
+                        splitter(graph, prev, seen);                              //split
+                        free(seen);                                         //free memory from seen (bfs)
                         free(prev);                                         //free memory from dijkstra prev
                         break;
                     }
