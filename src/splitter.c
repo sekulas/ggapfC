@@ -20,8 +20,12 @@ int is_on_the_edge(graph_t * graph, int node) {
         if(graph->edge[node][i].node != DEFAULT_NODE)
             k++;
         
-    if( k < ADJ_LIST_COLS )
+    fprintf(stderr, "k: %d\n", k);
+
+    if( k != ADJ_LIST_COLS ) {
+        fprintf(stderr, "edge_node\n");
         return EDGE_NODE;
+    }
     
     return NOT_EDGE_NODE;
 

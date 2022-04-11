@@ -35,9 +35,11 @@ int bfs(graph_t * graph, int starting_node, int mode, char * primary_seen) {
 
         }
 
-        if( connected_graph = is_graph_connected( graph, seen ) ) {
+        connected_graph = is_graph_connected( graph, seen );
+        if( connected_graph ) {
             
             //if we are in a SPLIT_MODE we need a seen table for future operations
+            fprintf(stderr, "CLONING PRIMARY_SEEN BEEP                              ****\n");
             if(mode == SPLIT_MODE)
                 for(int i = 0; i < graph->nodes; i++)
                     primary_seen[i] = seen[i];  
@@ -63,7 +65,7 @@ void jump_into(graph_t * graph, int starting_node, char * seen, queue_ptr_t q) {
         if(adjacent_node != DEFAULT_NODE)          //if neighbour exist
             if(seen[adjacent_node] == UNSEEN_NODE) { //if neighbour has not been visited
                 q = queue_add(q, adjacent_node);   //add it to queue
-                seen[adjacent_node] = IN_QUEUE_NODE;
+                seen[adjacent_node] = SEEN_NODE;
             }
     }
 

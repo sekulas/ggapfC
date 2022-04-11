@@ -4,8 +4,8 @@
 #include "graph.h"
 
 
-#define CONNECTED_GRAPH 0       //Connected Graph return value for bfs()
-#define NOT_CONNECTED_GRAPH 1   //Not Connected Graph return value for bfs()
+#define CONNECTED_GRAPH 1       //Connected Graph return value for bfs()
+#define NOT_CONNECTED_GRAPH 0   //Not Connected Graph return value for bfs()
 #define SEEN_NODE '1'           //1 if node has been seen in seen array
 #define UNSEEN_NODE '0'         //0 if node has not been seen in seen array
 #define IN_QUEUE_NODE '2'       //2 if node has been added to queue
