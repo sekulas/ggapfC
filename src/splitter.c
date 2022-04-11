@@ -7,7 +7,7 @@
 #include "bfs.h"
 
 
-void splitter(graph_t * graph, char * primary_prev, int * primary_seen, int starting_node, int end_node) {
+void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int starting_node, int end_node) {
     
 }
 

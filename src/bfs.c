@@ -63,6 +63,7 @@ void jump_into(graph_t * graph, int starting_node, char * seen, queue_ptr_t q) {
         if(adjacent_node != DEFAULT_NODE)          //if neighbour exist
             if(seen[adjacent_node] == UNSEEN_NODE) { //if neighbour has not been visited
                 q = queue_add(q, adjacent_node);   //add it to queue
+                seen[adjacent_node] = IN_QUEUE_NODE;
             }
     }
 

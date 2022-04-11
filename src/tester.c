@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "graph.h"
 #include "reader.h"
 #include "dijkstra.h"
@@ -13,6 +14,7 @@
     ./a.out r filename begin_node end_node                  - reads and shows graph from file and finds shortest path
     ./a.out w rows cols from_weight to_weight filename      - generates graph with given params
     ./a.out c source destination.graphml                   
+    ./a.out s source destination.graphml split_fragments              
 */
 
 void show_help() {
@@ -39,7 +41,6 @@ int main(int argc, char ** argv) {
     char * primary_seen = NULL;                 //seen table which will be gathering informations from bfs seen
     int * primary_prev = NULL;                  //prev table which will be gathering informations from dijkstra
     int starting_node;
-    int end_node;
 
 
     // read from file and find shortest path
@@ -80,13 +81,11 @@ int main(int argc, char ** argv) {
 
         primary_seen = malloc(graph->nodes);                 //seen table which will be gathering informations from bfs seen
         primary_prev = malloc(sizeof(int) * graph->nodes);    //prev table which will be gathering informations from dijkstra
-        int starting_node;
-        int end_node;
-
+        
         if(argc > 2) {
             out = fopen(argv[3], "w");
 
-            for(int i = 0; i < atoi(argv[4]); i++) {
+            for(int i = 1; i < atoi(argv[4]); i++) {
                 
                 while(1) {
                     
