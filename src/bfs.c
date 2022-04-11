@@ -14,14 +14,13 @@ int bfs(graph_t * graph, int starting_node) {
         queue_ptr_t q = NULL;
 
         //declaring an array which will store info about seen nodes
-        char * seen = malloc(graph->nodes);      //allocking memory for array seen
+        char * seen = malloc(sizeof(char) * graph->nodes);      //allocking memory for array seen
         if(seen == NULL) {
             fprintf(stderr, "bfs(): 'seen' allocation failed");
             exit(SEEN_FAILED_ALLOC);
         }
 
         memset(seen, UNSEEN_NODE, graph->nodes); //setting every node as unseen
-        seen[starting_node] = SEEN_NODE;         //setting starting node as seen
         q = queue_add( q, starting_node );       //adding starting node to queue
 
         //bfs algorithm
@@ -41,15 +40,17 @@ int bfs(graph_t * graph, int starting_node) {
 //function which jumps into a node (necessary for bfs)
 void jump_into(graph_t * graph, int starting_node, char * seen, queue_ptr_t q) {
 
-    int adjective_node; //it's gona store value of adjective node
+    int adjacent_node;  //it's gona store value of adjacent node
 
     for(int i = 0; i < ADJ_LIST_COLS; i++) {
 
-        adjective_node = graph->edge[starting_node][i].node; 
+        adjacent_node = graph->edge[starting_node][i].node; 
 
-        if(adjective_node != DEFAULT_NODE)          //if neighbour exist
-            if(seen[adjective_node] == UNSEEN_NODE) //if neighbour has not been visited
-                q = queue_add(q, adjective_node);   //add it to queue
+        if(adjacent_node != DEFAULT_NODE)              //if neighbour exist
+            if(seen[adjacent_node] == UNSEEN_NODE) {   //if neighbour has not been visited
+                q = queue_add(q, adjacent_node);       //add it to queue
+                seen[adjacent_node] = IN_QUEUE_NODE;
+            }
     }
 
 }

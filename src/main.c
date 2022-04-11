@@ -146,7 +146,7 @@ int main (int argc, char **argv) {
         // the functions that generate the graph terminate the program when an error is encountered
         // so no need to check if graph is NULL    
 
-    if(bfs(graph, 0) == 0) {                                        // sprawdzanie spojnosci grafu - zwraca 0 jezeli jest spojny 1 jesli jest nie spojny
+    if(bfs(graph, 0) == CONNECTED_GRAPH) {                                        // sprawdzanie spojnosci grafu - zwraca 0 jezeli jest spojny 1 jesli jest nie spojny
         printf("Graph is connected!\n");
         if(subgraphs > 1) {
             printf("Graph will be divided to %d subgraphs\n", subgraphs);
