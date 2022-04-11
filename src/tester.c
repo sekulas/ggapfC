@@ -32,7 +32,7 @@ int main(int argc, char ** argv) {
     graph_t * graph = NULL;
     FILE * out = NULL;
     int begin_node, end_node;
-    int * to_split;
+    int * to_split = NULL;
 
     // read from file and find shortest path
     if(argv[1][0] == 'r') {
