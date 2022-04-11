@@ -35,15 +35,16 @@ int main(int argc, char ** argv) {
     FILE * out = NULL;
     int begin_node, end_node;
     int * to_split = NULL;
-    char * seen = NULL;
+    char * primary_seen = NULL;                 //seen table which will be gathering informations from bfs seen
+    int * primary_prev = NULL;                  //prev table which will be gathering informations from dijkstra
     int starting_node;
     int end_node;
-    int * prev;
+
 
     // read from file and find shortest path
     if(argv[1][0] == 'r') {
         graph = read_from_file(argv[2]);
-        if(argc > 3) dijkstra(graph, atoi(argv[3]), atoi(argv[4]), 1, to_split, NOT_SPLIT_MODE);
+        if(argc > 3) dijkstra(graph, atoi(argv[3]), atoi(argv[4]), 1, primary_prev, NOT_SPLIT_MODE);
         else printf("give me more parameters\n");
     }
 
@@ -75,32 +76,44 @@ int main(int argc, char ** argv) {
 
     if(argv[1][0] == 's') {
        graph = read_from_file(argv[2]);
+
+        primary_seen = malloc(graph->nodes);                 //seen table which will be gathering informations from bfs seen
+        primary_prev = malloc(sizeof(int) * graph->nodes);    //prev table which will be gathering informations from dijkstra
+        int starting_node;
+        int end_node;
+
         if(argc > 2) {
             out = fopen(argv[3], "w");
 
             for(int i = 0; i < atoi(argv[4]); i++) {
-
+                
                 while(1) {
+                    
+                    memset(primary_seen, UNSEEN_NODE, graph->nodes);        //setting every node as unseen
+
+                    for( int j = 0; j < graph->nodes; j++)      //change value of the whole primary array to DEFAULT_NODE
+                        primary_prev[j] = DEFAULT_NODE;            
+
                     starting_node = rand() % graph->nodes;      //looking for a starting
                     end_node = rand() % graph->nodes;           //looking for a end node
 
                     if(starting_node != end_node)               //is not starting node same as end node
                         if( is_on_the_edge(graph, starting_node) && is_on_the_edge(graph, end_node) ); //are they on the edges
-                            bfs(graph, starting_node, SPLIT_MODE, seen);  //let's see if they're connected
+                            bfs(graph, starting_node, SPLIT_MODE, primary_seen);  //let's see if they're connected
 
-                    if(seen[end_node] == SEEN_NODE) {                       //if they're connected
-                        dijkstra(graph, atoi(argv[3]), atoi(argv[4]), 1, prev, SPLIT_MODE); //look for the shortest path
-                        splitter(graph, prev, seen);                              //split
-                        free(seen);                                         //free memory from seen (bfs)
-                        free(prev);                                         //free memory from dijkstra prev
+                    if(primary_seen[end_node] == SEEN_NODE) {                       //if they're connected
+                        dijkstra(graph, atoi(argv[3]), atoi(argv[4]), 1, primary_prev, SPLIT_MODE); //look for the shortest path
+                        splitter(graph, primary_prev, primary_seen);                              //split
                         break;
                     }
-                    else {
-                        free(seen);                            //free memory from the bfs about connections
+                    else {      
                         continue;                              //look one more time for the nodes
                     }
                 }
             }
+
+            free(primary_seen);                                         //free memory from seen (bfs)
+            free(primary_prev);                                         //free memory from dijkstra prev
 
             show_graphml(graph, out);
             printf("%s converted to %s\n",argv[2], argv[3]);

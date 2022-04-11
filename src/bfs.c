@@ -8,13 +8,15 @@
 #include "bfs.h"
 #include "splitter.h"
 //bfs - returns 0 if graphs is connected, 1 if not
-int bfs(graph_t * graph, int starting_node, int mode, char * seen) {
+int bfs(graph_t * graph, int starting_node, int mode, char * primary_seen) {
+
+        int connected_graph = CONNECTED_GRAPH;  //variable which will store info about our graph being connected or not
 
         //declaring queue for bfs
         queue_ptr_t q = NULL;
 
         //declaring an array which will store info about seen nodes
-        seen = malloc(graph->nodes);      //allocking memory for array seen
+        char * seen = malloc(graph->nodes);      //allocking memory for array seen
         if(seen == NULL) {
             fprintf(stderr, "bfs(): 'seen' allocation failed");
             exit(SEEN_FAILED_ALLOC);
@@ -33,7 +35,18 @@ int bfs(graph_t * graph, int starting_node, int mode, char * seen) {
 
         }
 
-        return is_graph_connected( graph, seen, mode );
+        if( connected_graph = is_graph_connected( graph, seen ) ) {
+            
+            //if we are in a SPLIT_MODE we need a seen table for future operations
+            if(mode == SPLIT_MODE)
+                for(int i = 0; i < graph->nodes; i++)
+                    primary_seen[i] = seen[i];  
+        
+        }
+
+        free(seen);
+        return connected_graph;
+
         
 }
 
@@ -57,8 +70,9 @@ void jump_into(graph_t * graph, int starting_node, char * seen, queue_ptr_t q) {
 //returns 0 if graph is connected or 1 if graph is not connected
 //actually it's looking if in array seen exist any unseen node if yes then
 //graph is not connected otherwise it's connected
-int is_graph_connected(graph_t * graph, char * seen, int mode) {
+int is_graph_connected(graph_t * graph, char * seen) {
 
+    //looking if graphs is connected
     for(int i = 0; i < graph->nodes; i++) {
         
         if( seen[i] == UNSEEN_NODE ) { 
@@ -67,9 +81,7 @@ int is_graph_connected(graph_t * graph, char * seen, int mode) {
         }
 
     }
-    //if we are in a SPLIT_MODE we need seen table
-    if(mode != SPLIT_MODE)
-        free(seen);
+
     return CONNECTED_GRAPH;
 
 }

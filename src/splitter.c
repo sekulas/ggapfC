@@ -4,6 +4,7 @@
 #include "error_codes.h"
 #include "graph.h"
 #include "splitter.h"
+#include "bfs.h"
 
 
 void splitter(graph_t * graph) {
