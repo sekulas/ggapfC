@@ -18,6 +18,7 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
     //our primary_prev table contains ancestors, so we should start from the end
     //reversing start and end
     int current_node = end_node;
+    int last_use_case;
     int following_node;
     int way;
     int e_node = starting_node;
@@ -50,6 +51,7 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
     
         while( current_node != e_node ) {
             
+            last_use_case = following_node;
             following_node = primary_prev[current_node];
 
             //break lineas neearby starting position
@@ -101,6 +103,15 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
             
             current_node = primary_prev[current_node];
         }
+
+        for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
+            if( graph->edge[e_node][i].node != last_use_case ) {
+                fprintf(stderr, "END: Wyciumkano: %d\n", graph->edge[e_node][i].node );
+                graph->edge[e_node][i].node = DEFAULT_NODE;
+                graph->edge[e_node][i].weight = DEFAULT_WEIGHT;
+            }
+        } 
+        
     }
     else {
         while( current_node != e_node ) {
