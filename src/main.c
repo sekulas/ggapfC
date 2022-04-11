@@ -1,14 +1,15 @@
-/* wersja-szkic niekompilowalna */
 #include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "error_codes.h"
-#include "reader.h"
 #include "const.h"
 #include "graph.h"
+#include "reader.h"
+#include "writer.h"
 #include "bfs.h"
+#include "dijkstra.h"
 
 void show_help() {
     fprintf(stderr, "!!!HELP!!!\n");
@@ -16,25 +17,24 @@ void show_help() {
 }
 
 int main (int argc, char **argv) {
-    int opt;
-    char *source_file = NULL;
-    char *result_file = NULL;
-    int columns = 5;
-    int rows = 5;
-    int subgraphs = 1;
-    int begin_node = -1;
-    int end_node = -1;
-    double from_weight = 1.0;
-    double to_weight = 10.0;
-    double path_length;
-    int flags; //variable cointaining info about used flags (bitoperations)
+    int     opt;
+    char    *source_file    = NULL;
+    char    *result_file    = NULL;
+    int     columns         = 5;
+    int     rows            = 5;
+    int     nodes;
+    int     subgraphs       = 1;
+    int     begin_node      = -1;
+    int     end_node        = -1;
+    double  from_weight     = 1.0;
+    double  to_weight       = 10.0;
+    double  path_length;
+    int     flags = 0; //variable cointaining info about used flags (bitoperations)
 
-    //FILE *in, *out; zamykamy to w konkretnych modulach
-    int nodes;
-    graph_t * graph;
+    graph_t *graph;
 
     //HELP
-    if( argc == 2 && (!strcmp("-?", argv[1]) || !strcmp("-help", argv[1]) || !strcmp("--help", argv[1]))) {
+    if( argc == 1 || (argc == 2 && (!strcmp("-?", argv[1]) || !strcmp("-help", argv[1]) || !strcmp("--help", argv[1])))) {
         show_help();
         return 0;
     }
@@ -138,38 +138,26 @@ int main (int argc, char **argv) {
 		exit( BAD_PARAMETERS );
 	}
 
-    // !!!walidacja parametrów!!!
-    // .... sprawdzenie ich sensownosci - zakresy itp
-
-    /* malocowanie listy sasiedztwa - do pliku graph.c
-    nodes = columns * rows;
-    elem_t **graph = malloc(sizeof(graph) * nodes); // tablica n x 4
-    
-    for(int i = 0; i < nodes; i++) 
-        graph[i] = malloc(sizeof(graph[i]) * 4);
-    */
-
     // if filename is given as parameter
     if(source_file != NULL)
         graph = read_from_file(source_file);
     else
-        graph = generate_graph(rows, columns, from_weight, to_weight);
-    // the functions that generate the graph terminate the program when an error is encountered
-    // so no need to check if graph is NULL    
+        graph = generator(rows, columns, from_weight, to_weight);
+        // the functions that generate the graph terminate the program when an error is encountered
+        // so no need to check if graph is NULL    
 
     if(bfs(graph, 0) == 0) {                                        // sprawdzanie spojnosci grafu - zwraca 0 jezeli jest spojny 1 jesli jest nie spojny
         printf("Graph is connected!\n");
         if(subgraphs > 1) {
             printf("Graph will be divided to %d subgraphs\n", subgraphs);
-                splitter(graph, rows, columns, subgraphs);                          // dzielenie grafu 
+                //splitter(graph, rows, columns, subgraphs);                          // dzielenie grafu 
         } else 
             printf("Graph cannot be divided.\n");
     } else
         printf("Graph is not connected - it will not be divided to subgraphs.\n");
         
-
-    //!!!Sprawdzaj czy begin_node i end_node sa tym samym wtedy 0!!!
-    path_length = dijkstra(graph, rows, columns, begin_node, end_node);         // odleglosci miedzy begin_node i end_node
+    // find shortest path between begin_node and end_node
+    path_length = dijkstra(graph, begin_node, end_node, SHOW_BACKTRACE);
     
     // print graph to result_file
     // if result_file is NULL print on stdout
@@ -188,11 +176,7 @@ int main (int argc, char **argv) {
             zapisz do pliku
     */
 
-    for(int i = 0; i < nodes; i++) 
-        free(graph[i]);
-    free(graph);
-    fclose(in);
-    fclose(out);
+    free_graph(graph);
 
     // !!!sprawdzic wycieki valgrindem!!!
 
