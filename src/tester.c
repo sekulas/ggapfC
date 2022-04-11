@@ -102,8 +102,8 @@ int main(int argc, char ** argv) {
                             bfs(graph, starting_node, SPLIT_MODE, primary_seen);  //let's see if they're connected
 
                     if(primary_seen[end_node] == SEEN_NODE) {                       //if they're connected
-                        dijkstra(graph, atoi(argv[3]), atoi(argv[4]), 1, primary_prev, SPLIT_MODE); //look for the shortest path
-                        splitter(graph, primary_prev, primary_seen);                              //split
+                        dijkstra(graph, starting_node, end_node, 1, primary_prev, SPLIT_MODE); //look for the shortest path
+                        splitter(graph, primary_prev, primary_seen, starting_node, end_node);                              //split
                         break;
                     }
                     else {      

@@ -9,7 +9,7 @@
 #define NOT_SPLIT_MODE  0
 
 //splits our graphs
-void splitter(graph_t * graph, char * prev, int * seen);
+void splitter(graph_t * graph, char * primary_prev, int * primary_seen, int starting_node, int end_node);
 
 //returns info about node ( is it on the edge or not )
 int is_on_the_edge(graph_t * graph, int node);
