@@ -8,7 +8,7 @@
 #include "bfs.h"
 #include "splitter.h"
 //bfs - returns 0 if graphs is connected, 1 if not
-int bfs(graph_t * graph, int starting_node, int mode, char * primary_seen) {
+int bfs(graph_t * graph, int starting_node, int mode, char * primary_seen, int * primary_prev) {
 
         int connected_graph = CONNECTED_GRAPH;  //variable which will store info about our graph being connected or not
 
@@ -52,7 +52,7 @@ int bfs(graph_t * graph, int starting_node, int mode, char * primary_seen) {
 
 
 //function which jumps into a node (necessary for bfs)
-void jump_into(graph_t * graph, int starting_node, char * seen, queue_ptr_t q) {
+void jump_into(graph_t * graph, int starting_node, char * seen, queue_ptr_t q, int * primary_prev) {
 
     int adjective_node; //it's gona store value of adjective node
 
@@ -61,8 +61,10 @@ void jump_into(graph_t * graph, int starting_node, char * seen, queue_ptr_t q) {
         adjective_node = graph->edge[starting_node][i].node; 
 
         if(adjective_node != DEFAULT_NODE)          //if neighbour exist
-            if(seen[adjective_node] == UNSEEN_NODE) //if neighbour has not been visited
+            if(seen[adjective_node] == UNSEEN_NODE) { //if neighbour has not been visited
                 q = queue_add(q, adjective_node);   //add it to queue
+                primary_prev[adjective_node] = starting_node;
+            }
     }
 
 }

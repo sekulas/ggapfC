@@ -99,10 +99,9 @@ int main(int argc, char ** argv) {
 
                     if(starting_node != end_node)               //is not starting node same as end node
                         if( is_on_the_edge(graph, starting_node) && is_on_the_edge(graph, end_node) ); //are they on the edges
-                            bfs(graph, starting_node, SPLIT_MODE, primary_seen);  //let's see if they're connected
+                            bfs(graph, starting_node, SPLIT_MODE, primary_seen, primary_prev);  //let's see if they're connected
 
                     if(primary_seen[end_node] == SEEN_NODE) {                       //if they're connected
-                        dijkstra(graph, starting_node, end_node, 1, primary_prev, SPLIT_MODE); //look for the shortest path
                         splitter(graph, primary_prev, primary_seen, starting_node, end_node);                              //split
                         break;
                     }
