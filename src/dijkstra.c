@@ -139,7 +139,7 @@ double dijkstra(graph_t * graph, int begin, int end, int show_backtrace, int * t
     // free dynamicly allocated memory
     free(distance);
     free(seen);
-    if( mode == TO_SPLIT ) {
+    if( mode == SPLIT_MODE ) {
         to_split = prev;
     }
     else 
