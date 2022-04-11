@@ -62,7 +62,7 @@ void backtrace(double * distance, int * prev, int begin, int end) {
 // finds shortest path betweent given vertices
 // returns shortest path lenght or DBL_MAX when there is no path between given vertices
 // if show_backtrace != 0, the course of the shortest path will be presented
-double dijkstra(graph_t * graph, int begin, int end, int show_backtrace) {
+double dijkstra(graph_t * graph, int begin, int end, int show_backtrace, int * to_split, int mode) {
     
     if(begin < 0 || begin >= graph->nodes || end < 0 || end >= graph->nodes) {
         fprintf(stderr, "dijkstra(): given indexes out of range!\n");
@@ -139,7 +139,12 @@ double dijkstra(graph_t * graph, int begin, int end, int show_backtrace) {
     // free dynamicly allocated memory
     free(distance);
     free(seen);
-    free(prev);
+    if( mode == TO_SPLIT ) {
+        to_split = prev;
+    }
+    else 
+        free(prev);
+
     free_pq(pq);
 
     return result;

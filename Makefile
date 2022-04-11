@@ -6,7 +6,10 @@ testnsp1:
 testsp1:
 	./a.out -s data/graph1 -b 1 -e 2
 
-
+online:
+	gcc src/tester.c src/graph.c src/reader.c src/dijkstra.c src/priority_queue.c -lm
+makegraph:
+	./a.out c data/split1.txt pokaz.graphml
 clean:
 	-rm *.o 
 
