@@ -9,7 +9,7 @@
 #include "const.h"
 #include "graph.h"
 #include "bfs.h"
-
+#include "splitter.h"
 void show_help() {
     fprintf(stderr, "!!!HELP!!!\n");
     return;
@@ -27,7 +27,7 @@ int main (int argc, char **argv) {
     double from_weight = 1.0;
     double to_weight = 10.0;
     double path_length;
-    int flags; //variable cointaining info about used flags (bitoperations)
+    int flags = 0; //variable cointaining info about used flags (bitoperations)
 
     //FILE *in, *out; zamykamy to w konkretnych modulach
     int nodes;
@@ -157,11 +157,11 @@ int main (int argc, char **argv) {
     // the functions that generate the graph terminate the program when an error is encountered
     // so no need to check if graph is NULL    
 
-    if(bfs(graph, 0) == 0) {                                        // sprawdzanie spojnosci grafu - zwraca 0 jezeli jest spojny 1 jesli jest nie spojny
+    if(bfs(graph, 0, NOT_SPLIT_MODE ) == 0) {                                        // sprawdzanie spojnosci grafu - zwraca 0 jezeli jest spojny 1 jesli jest nie spojny
         printf("Graph is connected!\n");
         if(subgraphs > 1) {
             printf("Graph will be divided to %d subgraphs\n", subgraphs);
-                splitter(graph, rows, columns, subgraphs);                          // dzielenie grafu 
+                splitter(graph, subgraphs);                          // dzielenie grafu 
         } else 
             printf("Graph cannot be divided.\n");
     } else
