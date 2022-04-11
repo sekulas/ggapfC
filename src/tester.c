@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "graph.h"
 #include "reader.h"
 #include "dijkstra.h"
 #include "splitter.h"
+#include "bfs.h"
 
 /* USAGE:
     cc src/tester.c src/reader.c src/dijkstra.c src/priority_queue.c src/graph.c -lm
@@ -33,11 +35,15 @@ int main(int argc, char ** argv) {
     FILE * out = NULL;
     int begin_node, end_node;
     int * to_split = NULL;
+    char * seen = NULL;
+    int starting_node;
+    int end_node;
+    int * prev;
 
     // read from file and find shortest path
     if(argv[1][0] == 'r') {
         graph = read_from_file(argv[2]);
-        if(argc > 3) dijkstra(graph, atoi(argv[3]), atoi(argv[4]), 1, to_split, BASIC_DIJKSTRA);
+        if(argc > 3) dijkstra(graph, atoi(argv[3]), atoi(argv[4]), 1, to_split, NOT_SPLIT_MODE);
         else printf("give me more parameters\n");
     }
 
@@ -73,8 +79,26 @@ int main(int argc, char ** argv) {
             out = fopen(argv[3], "w");
 
             for(int i = 0; i < atoi(argv[4]); i++) {
-                dijkstra(graph, atoi(argv[3]), atoi(argv[4]), 1, to_split, TO_SPLIT);
-                splitter(graph);
+
+                while(1) {
+                    starting_node = rand() % graph->nodes;      //looking for a starting
+                    end_node = rand() % graph->nodes;           //looking for a end node
+
+                    if(starting_node != end_node)               //is not starting node same as end node
+                        if( is_on_the_edge(graph, starting_node) && is_on_the_edge(graph, end_node) ); //are they on the edges
+                            bfs(graph, starting_node, SPLIT_MODE, seen);  //let's see if they're connected
+
+                    if(seen[end_node] == SEEN_NODE) {                       //if they're connected
+                        dijkstra(graph, atoi(argv[3]), atoi(argv[4]), 1, prev, SPLIT_MODE); //look for the shortest path
+                        splitter(graph, prev);                              //split
+                        free(prev);                                         //free memory from dijkstra prev
+                        break;
+                    }
+                    else {
+                        free(seen);                            //free memory from the bfs about connections
+                        continue;                              //look one more time for the nodes
+                    }
+                }
             }
 
             show_graphml(graph, out);
