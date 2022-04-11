@@ -7,11 +7,13 @@ testsp1:
 	./a.out -s data/graph1 -b 1 -e 2
 
 online:
-	gcc src/tester.c src/graph.c src/reader.c src/dijkstra.c src/priority_queue.c src/bfs.c src/queue.c src/splitter.c -lm
+	gcc src/tester.c src/graph.c src/reader.c src/dijkstra.c src/priority_queue.c src/bfs.c src/queue.c src/splitter.c -lm -ggdb
 graph:
 	./a.out c data/split1.txt pokaz.graphml
 splitgraph:
 	./a.out s data/split1.txt pokaz.graphml 2
+gdbsplitgraph:
+	gdb ./a.out s data/split1.txt pokaz.graphml 2
 clean:
 	-rm *.o 
 

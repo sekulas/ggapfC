@@ -13,7 +13,8 @@
 #define LEFT  3 
 #define EDGE_CASE      0
 #define NORMAL_CASE    1
-
+#define NOT_ON_THE_ROAD 0
+#define ON_THE_ROAD    1
 //splits our graphs
 void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int starting_node, int end_node);
 

@@ -18,12 +18,24 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
     //our primary_prev table contains ancestors, so we should start from the end
     //reversing start and end
     int current_node = end_node;
-    int last_use_case;
     int following_node;
     int way;
     int e_node = starting_node;
     int mode = EDGE_CASE;
+    int node_to_cut;
 
+    //it will store info from primary_prev about the fastest path, but quicker access
+    int * road = malloc(sizeof(int) * graph->nodes);
+    for(int i = 0; i < graph->nodes; i++)
+        road[i] = NOT_ON_THE_ROAD;
+    road[current_node] = ON_THE_ROAD;
+    road[e_node] = ON_THE_ROAD;
+    while(current_node != e_node) {
+        road[current_node] = ON_THE_ROAD;
+        current_node = primary_prev[current_node];
+    }
+
+    current_node = end_node;
     //we are on the right edge or top edge case
     while( current_node != e_node ) {
         if( ((current_node % columns) == (columns - 1)) || ((current_node < columns)) ) {
@@ -37,81 +49,146 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
         }
     }
 
-
+    current_node = end_node;
 
     if( mode == NORMAL_CASE ) {
-
-        for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
-            if( graph->edge[current_node][i].node != primary_prev[current_node] ) {
-                fprintf(stderr, "START: Wyciumkano: %d\n", graph->edge[current_node][i].node );
-                graph->edge[current_node][i].node = DEFAULT_NODE;
-                graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
-            }
-        } 
     
         while( current_node != e_node ) {
             
-            last_use_case = following_node;
             following_node = primary_prev[current_node];
 
             //break lineas neearby starting position
-
-
             way = direction( rows, columns, current_node, following_node );
 
             if( way == UP ) {
                 //looking for the right connection to break
-                for( int i = 0; i < ADJ_LIST_COLS; i++ )
-                    if( graph->edge[current_node][i].node == current_node + 1 ) { 
+                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
+                    node_to_cut = current_node + 1;
+                    if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) { 
                         graph->edge[current_node][i].node = DEFAULT_NODE;
                         graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
-                        fprintf(stderr, "UP: Wyciumkano: %d\n", current_node + 1);
+                        fprintf(stderr, "UP: Wyciumkano: %d\n", node_to_cut);
+                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
+                            if( graph->edge[node_to_cut][j].node == current_node ) {
+                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
+                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
                     }
+                    }
+                }
+
+                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
+                    node_to_cut = following_node + 1;
+                    if( (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) { 
+                        graph->edge[following_node][i].node = DEFAULT_NODE;
+                        graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
+                        fprintf(stderr, "UP: Wyciumkano: %d\n", node_to_cut);
+                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
+                            if( graph->edge[node_to_cut][j].node == following_node ) {
+                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
+                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
+                    }
+                    }
+                }
 
             }
             else if( way == RIGHT ) {
                 //looking for the down connection to break
-                for( int i = 0; i < ADJ_LIST_COLS; i++ )
-                    if( graph->edge[current_node][i].node == current_node + columns ) {
+                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
+                    node_to_cut = current_node + columns;
+                    if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE)) {
                         graph->edge[current_node][i].node = DEFAULT_NODE;
                         graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
-                        fprintf(stderr, "RIGHT: Wyciumkano: %d\n", current_node + columns);
+                        fprintf(stderr, "RIGHT: Wyciumkano: %d\n", node_to_cut);
+                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
+                            if( graph->edge[node_to_cut][j].node == current_node ) {
+                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
+                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
+                            }
                     }
+                }
+
+                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
+                    node_to_cut = following_node + columns;
+                    if( (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE)) {
+                        graph->edge[following_node][i].node = DEFAULT_NODE;
+                        graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
+                        fprintf(stderr, "RIGHT: Wyciumkano: %d\n", node_to_cut);
+                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
+                            if( graph->edge[node_to_cut][j].node == following_node ) {
+                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
+                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
+                            }
+                    }
+                }
+                
 
 
             }
             else if( way == DOWN ) {
                 //looking for the down connection to break
-                for( int i = 0; i < ADJ_LIST_COLS; i++ )
-                    if( graph->edge[current_node][i].node == current_node - 1) {
+                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
+                    node_to_cut = current_node - 1;
+                    if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) {
                         graph->edge[current_node][i].node = DEFAULT_NODE;
                         graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
-                        fprintf(stderr, "DOWN: Wyciumkano: %d\n", current_node - 1);
+                        fprintf(stderr, "DOWN: Wyciumkano: %d\n", node_to_cut);
+                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
+                            if( graph->edge[node_to_cut][j].node == current_node ) {
+                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
+                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
+                            }
                     }
+                }
+
+                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
+                    node_to_cut = following_node - 1;
+                    if( (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) {
+                        graph->edge[following_node][i].node = DEFAULT_NODE;
+                        graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
+                        fprintf(stderr, "DOWN: Wyciumkano: %d\n", node_to_cut);
+                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
+                            if( graph->edge[node_to_cut][j].node == following_node ) {
+                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
+                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
+                            }
+                    }
+                }
                         
             }
             else if( way == LEFT ) {
                 //looking for the down connection to break
-                for( int i = 0; i < ADJ_LIST_COLS; i++ )
-                    if( graph->edge[current_node][i].node == current_node - columns ) {
+                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
+                    node_to_cut = current_node - columns;
+                    if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) {
                         graph->edge[current_node][i].node = DEFAULT_NODE;
                         graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
-                        fprintf(stderr, "LEFT: Wyciumkano: %d\n", current_node - columns);
+                        fprintf(stderr, "LEFT: Wyciumkano: %d\n", node_to_cut);
+                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
+                            if( graph->edge[node_to_cut][j].node == current_node ) {
+                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
+                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
+                            }
                     }
+                }
+                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
+                    node_to_cut = following_node - columns;
+                    if( (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) {
+                        graph->edge[following_node][i].node = DEFAULT_NODE;
+                        graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
+                        fprintf(stderr, "LEFT: Wyciumkano: %d\n", node_to_cut);
+                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
+                            if( graph->edge[node_to_cut][j].node == following_node ) {
+                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
+                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
+                            }
+                    }
+                }
                         
             }
             
             current_node = primary_prev[current_node];
         }
 
-        for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
-            if( graph->edge[e_node][i].node != last_use_case ) {
-                fprintf(stderr, "END: Wyciumkano: %d\n", graph->edge[e_node][i].node );
-                graph->edge[e_node][i].node = DEFAULT_NODE;
-                graph->edge[e_node][i].weight = DEFAULT_WEIGHT;
-            }
-        } 
-        
     }
     else {
         while( current_node != e_node ) {
