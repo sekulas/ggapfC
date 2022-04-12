@@ -6,9 +6,11 @@
 #include "queue.h"
 #include "error_codes.h"
 #include "bfs.h"
-
+#include "splitter.h"
 //bfs - returns 0 if graphs is connected, 1 if not
-int bfs(graph_t * graph, int starting_node) {
+int bfs(graph_t * graph, int starting_node, int mode, char * primary_seen) {
+
+        int connected_graph = CONNECTED_GRAPH;  //variable which will store info about our graph being connected or not
 
         //declaring queue for bfs
         queue_ptr_t q = NULL;
@@ -32,7 +34,20 @@ int bfs(graph_t * graph, int starting_node) {
 
         }
 
-        return is_graph_connected( graph, seen );
+        connected_graph = is_graph_connected( graph, seen );
+        if( connected_graph ) {
+            
+            //if we are in a SPLIT_MODE we need a seen table for future operations
+            fprintf(stderr, "CLONING PRIMARY_SEEN BEEP                              ****\n");
+            if(mode == SPLIT_MODE)
+                for(int i = 0; i < graph->nodes; i++)
+                    primary_seen[i] = seen[i];  
+        
+        }
+
+        free(seen);
+        return connected_graph;
+
         
 }
 
@@ -40,16 +55,27 @@ int bfs(graph_t * graph, int starting_node) {
 //function which jumps into a node (necessary for bfs)
 void jump_into(graph_t * graph, int starting_node, char * seen, queue_ptr_t q) {
 
+<<<<<<< HEAD
     int adjacent_node;  //it's gona store value of adjacent node
+=======
+    int adjacent_node; //it's gona store value of adjacent node
+>>>>>>> splitter
 
     for(int i = 0; i < ADJ_LIST_COLS; i++) {
 
         adjacent_node = graph->edge[starting_node][i].node; 
 
+<<<<<<< HEAD
         if(adjacent_node != DEFAULT_NODE)              //if neighbour exist
             if(seen[adjacent_node] == UNSEEN_NODE) {   //if neighbour has not been visited
                 q = queue_add(q, adjacent_node);       //add it to queue
                 seen[adjacent_node] = IN_QUEUE_NODE;
+=======
+        if(adjacent_node != DEFAULT_NODE)          //if neighbour exist
+            if(seen[adjacent_node] == UNSEEN_NODE) { //if neighbour has not been visited
+                q = queue_add(q, adjacent_node);   //add it to queue
+                seen[adjacent_node] = SEEN_NODE;
+>>>>>>> splitter
             }
     }
 
@@ -60,16 +86,11 @@ void jump_into(graph_t * graph, int starting_node, char * seen, queue_ptr_t q) {
 //graph is not connected otherwise it's connected
 int is_graph_connected(graph_t * graph, char * seen) {
 
-    for(int i = 0; i < graph->nodes; i++) {
-        
-        if( seen[i] == UNSEEN_NODE ) { 
-            free(seen);
+    //looking if graphs is connected
+    for(int i = 0; i < graph->nodes; i++)      
+        if( seen[i] == UNSEEN_NODE ) 
             return NOT_CONNECTED_GRAPH;
-        }
 
-    }
-
-    free(seen);
     return CONNECTED_GRAPH;
 
 }

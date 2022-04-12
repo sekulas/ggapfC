@@ -10,6 +10,7 @@
 #include "writer.h"
 #include "bfs.h"
 #include "dijkstra.h"
+#include "splitter.h"
 
 void show_help();
 
@@ -28,6 +29,7 @@ int main (int argc, char **argv) {
     double  path_length;
     int     flags = 0; //variable cointaining info about used flags (bitoperations)
 
+    int nodes;
     graph_t *graph;
 
     //HELP
@@ -143,11 +145,11 @@ int main (int argc, char **argv) {
         // the functions that generate the graph terminate the program when an error is encountered
         // so no need to check if graph is NULL    
 
-    if(bfs(graph, 0) == CONNECTED_GRAPH) {                                        // sprawdzanie spojnosci grafu - zwraca 0 jezeli jest spojny 1 jesli jest nie spojny
+    if(bfs(graph, 0, NOT_SPLIT_MODE ) == CONNECTED_GRAPH) {                                        // sprawdzanie spojnosci grafu - zwraca 0 jezeli jest spojny 1 jesli jest nie spojny
         printf("Graph is connected!\n");
         if(subgraphs > 1) {
             printf("Graph will be divided to %d subgraphs\n", subgraphs);
-                //splitter(graph, rows, columns, subgraphs);                          // dzielenie grafu 
+                splitter(graph, subgraphs);                          // dzielenie grafu 
         } else 
             printf("Graph will not be divided.\n");
     } else

@@ -1,0 +1,11 @@
+przekazanie dodatkowych 2 parametrow jeden prev
+						drugi parametr to jest mode
+
+kiedy mode jest odpalony to wtedy przkezany wskaznik == tablica ze srodka i wtedy nie zwalniamy tablicy prev
+
+otherwise zwalniamy prev ze srodka i NULLa do przekazanego zeby smieci nie bylo
+
+
+splitter 
+	dijsktra
+	algorytm dzielenia( tablica )
