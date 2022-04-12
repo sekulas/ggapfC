@@ -77,14 +77,9 @@ void jump_into(graph_t * graph, int starting_node, char * seen, queue_ptr_t q) {
 int is_graph_connected(graph_t * graph, char * seen) {
 
     //looking if graphs is connected
-    for(int i = 0; i < graph->nodes; i++) {
-        
-        if( seen[i] == UNSEEN_NODE ) { 
-            free(seen);
+    for(int i = 0; i < graph->nodes; i++)      
+        if( seen[i] == UNSEEN_NODE ) 
             return NOT_CONNECTED_GRAPH;
-        }
-
-    }
 
     return CONNECTED_GRAPH;
 
