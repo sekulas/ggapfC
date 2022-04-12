@@ -53,8 +53,8 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
     current_node = end_node;
 
     if( mode == NORMAL_CASE ) {
-/*      DO PRZEKMINIKI CZY NA STARCIE USOWAC WSZYSTKIE NA POCZATKU I NA KONCU 
-
+        
+        //starting node connections break
         for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
             node_to_cut = graph->edge[current_node][i].node;
             if( (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) { 
@@ -71,8 +71,6 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
 
         current_node = end_node;
 
-*/
-    
         while( current_node != e_node ) {
             
             following_node = primary_prev[current_node];
@@ -210,6 +208,20 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
             
             current_node = primary_prev[current_node];
         }
+
+        for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
+            node_to_cut = graph->edge[e_node][i].node;
+            if( (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) { 
+                graph->edge[e_node][i].node = DEFAULT_NODE;
+                graph->edge[e_node][i].weight = DEFAULT_WEIGHT;
+                fprintf(stderr, "START: Wyciumkano: %d\n", node_to_cut);
+                for( int j = 0; j < ADJ_LIST_COLS; j++ )
+                    if( graph->edge[node_to_cut][j].node == e_node ) {
+                        graph->edge[node_to_cut][j].node = DEFAULT_NODE;
+                        graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
+                }
+            }
+        }        
 
     }
     else {
