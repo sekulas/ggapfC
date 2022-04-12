@@ -396,37 +396,25 @@ void split_graph(graph_t * graph, int subgraphs) {
     srand(time(NULL));
 
     for(int i = 1; i < subgraphs; i++) {
-        //fprintf(stderr, "%d SPLIT\n", i);
         memset(primary_seen, UNSEEN_NODE, graph->nodes);    //setting every node as unseen
 
         for( int j = 0; j < graph->nodes; j++)              //change value of the whole primary array to DEFAULT_NODE
             primary_prev[j] = DEFAULT_NODE;            
-            
-        //fprintf(stderr, "set_up\n");
 
         starting_node = rand() % graph->nodes;              //looking for a starting node 
 
         while( !is_on_the_edge( graph, starting_node ) ) {
             starting_node = rand() % graph->nodes;          //looking for a starting node on the edge
-            //fprintf(stderr, "starting node\n");
         }
 
         bfs(graph, starting_node, SPLIT_MODE, primary_seen);  //let's see if they're connected
 
-        // tests
-        /*for(int i = 0; i < graph->nodes; i++)
-            printf("%d\n", primary_seen[i]);*/
-
         //looking for end node through bfs table
         do {
             end_node = rand() % graph->nodes;
-            //fprintf(stderr, "looking for end node\n");
         } while( !(is_on_the_edge( graph, end_node ) && (primary_seen[end_node] == SEEN_NODE )));
 
-        //fprintf(stderr, "~~ there is connection!\n");
-        //printf("starting dijkstra from %d to %d\n", starting_node, end_node);
         dijkstra(graph, starting_node, end_node, DONT_SHOW_BACKTRACE, primary_prev, SPLIT_MODE);  //look for the shortest path
-        //printf("starting splitter\n");
         splitter(graph, primary_prev, primary_seen, starting_node, end_node);   //split  
     }
 
