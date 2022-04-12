@@ -26,12 +26,12 @@ int main (int argc, char **argv) {
     double  from_weight     = 1.0;
     double  to_weight       = 10.0;
     double  path_length;
-    int     flags = 0; //variable cointaining info about used flags (bitoperations)
+    int     flags = 0;      //variable cointaining info about used flags (bitoperations)
 
     int nodes;
     graph_t *graph;
 
-    //HELP
+    // help detection
     if( argc == 1 || (argc == 2 && (!strcmp("-?", argv[1]) || !strcmp("-help", argv[1]) || !strcmp("--help", argv[1])))) {
         show_help();
         return 0;
@@ -90,37 +90,35 @@ int main (int argc, char **argv) {
                 break;
             default:
                 fprintf(stderr, "Invalid usage of flag or used flag does not exist.\nSmall help for you:\n\n");                  
-                show_help(); // albo wypisz error
+                show_help();
                 exit (INVALID_FLAG);
         }
     }
 
     nodes = columns * rows;
 
-    //Nie podano wymaganych flag
+    // lack of required flags
     if(!(flags & BEGIN_NODE_FLAG_BIT) || !(flags & END_NODE_FLAG_BIT)) {
-        fprintf(stderr, "Flags -b -e are necessary!\n");
+        fprintf(stderr, "main(): Flags -b -e are necessary!\n");
         show_help();
         exit(LACK_OF_B_OR_E_FLAG);
     }
-    //Niepoprawne wagi
+    // wrong weights
     if( ((flags & FROM_WEIGHT_FLAG_BIT) || (flags & TO_WEIGHT_FLAG_BIT)) && from_weight > to_weight ) {
-        fprintf(stderr, "Wrong wage range! Your input:\n from:%g to:%g \n", from_weight, to_weight);
+        fprintf(stderr, "main(): Wrong weight range! Your input:\n from:%g to:%g \n", from_weight, to_weight);
         show_help();
         exit(WRONG_WAGES);
     }
-    //Niepoprawne subgraphy
+    // wrong subraphs number
     if( (flags & SUBGRAPHS_FLAG_BIT) && ( subgraphs < 1 || subgraphs > (nodes / 2) ) ) {
-        fprintf(stderr, "There is no option to divide this graph to %d subgraphs!\n", subgraphs);
+        fprintf(stderr, "main(): There is no option to divide this graph to %d subgraphs!\n", subgraphs);
         show_help();
         exit(CANNOT_DIVIDE);
     }
 
-    /*
-        Funkcja lapie non option arguments
-    */
+    // non option arguments
 	if( optind < argc ) {
-		fprintf( stderr, "\nBad parameters!\n" );
+		fprintf( stderr, "\nmain(): Bad parameters!\n" );
 		for( ; optind < argc; optind++ )
 			fprintf( stderr, "\t\"%s\"\n", argv[optind] );
 		fprintf( stderr, "\n" );
@@ -136,11 +134,13 @@ int main (int argc, char **argv) {
         // the functions that generate the graph terminate the program when an error is encountered
         // so no need to check if graph is NULL    
 
-    if(bfs(graph, 0, NOT_SPLIT_MODE, NULL) == CONNECTED_GRAPH) {                                        // sprawdzanie spojnosci grafu - zwraca 0 jezeli jest spojny 1 jesli jest nie spojny
+    // checking if graph is connected
+    if(bfs(graph, 0, NOT_SPLIT_MODE, NULL) == CONNECTED_GRAPH) {
         printf("Graph is connected!\n");
         if(subgraphs > 1) {
             printf("Graph will be divided to %d subgraphs\n", subgraphs);
-                split_graph(graph, subgraphs);                          // dzielenie grafu 
+            // splitting graph
+            split_graph(graph, subgraphs);
         } else 
             printf("Graph will not be divided.\n");
     } else
@@ -152,11 +152,12 @@ int main (int argc, char **argv) {
     // print graph to result_file
     // if result_file is NULL print on stdout
     save_to_file(graph, result_file);
+
+    // additional feature - prints graph in graphml file format
+    // you can visualise it here: https://graphonline.ru/en/
     save_to_graphml(graph, result_file);
 
     free_graph(graph);
-
-    // !!!sprawdzic wycieki valgrindem!!!
 
     return 0;
 }
