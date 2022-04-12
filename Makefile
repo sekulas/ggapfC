@@ -10,8 +10,12 @@ online:
 	gcc src/tester.c src/graph.c src/reader.c src/dijkstra.c src/priority_queue.c src/bfs.c src/queue.c src/splitter.c -lm -ggdb
 graph:
 	./a.out c data/split1.txt pokaz.graphml
-splitgraph:
+splitgraph1:
 	./a.out s data/split1.txt pokaz.graphml 2
+splitgraph2:
+	./a.out s data/split1.txt pokaz.graphml 3
+splitgraph3:
+	./a.out s data/split1.txt pokaz.graphml 4
 gdbsplitgraph:
 	gdb ./a.out s data/split1.txt pokaz.graphml 2
 clean:
