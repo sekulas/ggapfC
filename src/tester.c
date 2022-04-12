@@ -111,6 +111,7 @@ int main(int argc, char ** argv) {
 
                     bfs(graph, starting_node, SPLIT_MODE, primary_seen);  //let's see if they're connected
 
+                    //looking for end node through bfs table
                     while(1) {
 
                         end_node = rand() % graph->nodes;
