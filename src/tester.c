@@ -41,7 +41,6 @@ int main(int argc, char ** argv) {
     graph_t * graph = NULL;
     FILE * out = NULL;
     int begin_node, end_node;
-    int * to_split = NULL;
     char * primary_seen = NULL;                 //seen table which will be gathering informations from bfs seen
     int * primary_prev = NULL;                  //prev table which will be gathering informations from dijkstra
     int starting_node;
@@ -78,6 +77,7 @@ int main(int argc, char ** argv) {
         }
     }
 
+    // split graph
     if(argv[1][0] == 's') {
        graph = read_from_file(argv[2]);
 

@@ -1,5 +1,6 @@
 # Object files
 *.graphml
+*.txt
 *.o
 # Executables
 *.exe

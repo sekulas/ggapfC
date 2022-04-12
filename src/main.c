@@ -20,7 +20,6 @@ int main (int argc, char **argv) {
     char    *result_file    = NULL;
     int     columns         = 5;
     int     rows            = 5;
-    int     nodes;
     int     subgraphs       = 1;
     int     begin_node      = -1;
     int     end_node        = -1;
@@ -37,14 +36,6 @@ int main (int argc, char **argv) {
         show_help();
         return 0;
     }
-
-    /*
-        https://azrael.digipen.edu/~mmead/www/Courses/CS180/getopt.html
-        getopt quick guide:
-        ":" - taki znak po danej fladze znaczy, że dana flaga wymaga podania argumentu
-              jeżeli funkcja nie dostanie argumentu w wywala znak "?" - czyli wchodzi w default
-        brak czegokolwiek po literce znaczy, że nie potrzebuje ona zadnego argumentu - dana flaga aktywuje jakas funkcje
-    */
 
     while ((opt = getopt (argc, argv, "hs:x:y:n:b:e:r:f:t:")) != -1) {
         switch (opt) {
@@ -145,35 +136,23 @@ int main (int argc, char **argv) {
         // the functions that generate the graph terminate the program when an error is encountered
         // so no need to check if graph is NULL    
 
-    if(bfs(graph, 0, NOT_SPLIT_MODE ) == CONNECTED_GRAPH) {                                        // sprawdzanie spojnosci grafu - zwraca 0 jezeli jest spojny 1 jesli jest nie spojny
+    if(bfs(graph, 0, NOT_SPLIT_MODE, NULL) == CONNECTED_GRAPH) {                                        // sprawdzanie spojnosci grafu - zwraca 0 jezeli jest spojny 1 jesli jest nie spojny
         printf("Graph is connected!\n");
         if(subgraphs > 1) {
             printf("Graph will be divided to %d subgraphs\n", subgraphs);
-                splitter(graph, subgraphs);                          // dzielenie grafu 
+                split_graph(graph, subgraphs);                          // dzielenie grafu 
         } else 
             printf("Graph will not be divided.\n");
     } else
         printf("Graph is not connected - it will not be divided to subgraphs.\n");
         
     // find shortest path between begin_node and end_node
-    path_length = dijkstra(graph, begin_node, end_node, SHOW_BACKTRACE);
+    path_length = dijkstra(graph, begin_node, end_node, SHOW_BACKTRACE, NULL, NOT_SPLIT_MODE);
     
     // print graph to result_file
     // if result_file is NULL print on stdout
     save_to_file(graph, result_file);
-
-    /*
-        jeżeli podany source_file
-            sprawdź spójność - bfs
-            podziel na n podgrafów (jeżeli się da)
-            znajdz sciezke - dijkstra
-            zapisz do pliku
-        w przeciwnym wypadku
-            wygeneruj graf o podanych parametrach
-            podziel graf
-            znajdz sciezke
-            zapisz do pliku
-    */
+    save_to_graphml(graph, result_file);
 
     free_graph(graph);
 

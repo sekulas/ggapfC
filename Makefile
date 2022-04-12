@@ -1,29 +1,20 @@
 all:
-	gcc src/main.c src/graph.c src/reader.c src/writer.c src/queue.c src/bfs.c src/priority_queue.c src/dijkstra.c -o ggapf -lm -ggdb
+	gcc src/main.c src/graph.c src/reader.c src/writer.c src/queue.c src/bfs.c src/priority_queue.c src/dijkstra.c src/splitter.c -o ggapf -lm -ggdb
 
-spliting:
-	gcc src/main.c src/queue.c src/bfs.c src/reader.c src/graph.c src/splitter.c -lm -ggdb
-generate:
-	./a.out w 20 20 1.0 2.0 data/split1.txt
+generate_test: all
+	./ggapf -x 10 -y 10 -f 0 -t 10 -n 1 -b 0 -e 99 -r data/sample10x10_nosplit
 
+split_test_2: generate_test
+	./ggapf -s data/sample10x10_nosplit -n 2 -b 0 -e 99 -r data/sample10x10_split2
+split_test_3: generate_test
+	./ggapf -s data/sample10x10_nosplit -n 3 -b 0 -e 99 -r data/sample10x10_split3
+split_test_4: generate_test
+	./ggapf -s data/sample10x10_nosplit -n 4 -b 0 -e 99 -r data/sample10x10_split4
+split_test_5: generate_test
+	./ggapf -s data/sample10x10_nosplit -n 5 -b 0 -e 99 -r data/sample10x10_split5
+split_test_10: generate_test
+	./ggapf -s data/sample10x10_nosplit -n 10 -b 0 -e 99 -r data/sample10x10_split10
 
-testnsp1:
-	./a.out -s data/not_connected_graph1.txt -b 1 -e 2
-testsp1:
-	./a.out -s data/graph1 -b 1 -e 2
-
-online:
-	gcc src/tester.c src/graph.c src/reader.c src/dijkstra.c src/writer.c src/priority_queue.c src/bfs.c src/queue.c src/splitter.c -lm -ggdb
-graph:
-	./a.out c data/split1.txt pokaz.graphml
-splitgraph1:
-	./a.out s data/split1.txt pokaz.graphml 2
-splitgraph2:
-	./a.out s data/split1.txt pokaz.graphml 3
-splitgraph3:
-	./a.out s data/split1.txt pokaz.graphml 4
-gdbsplitgraph:
-	gdb ./a.out s data/split1.txt pokaz.graphml 2
 clean:
-	-rm *.o 
+	-rm *.o ggapf tester
 
