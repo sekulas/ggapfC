@@ -1,19 +1,18 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+#include <time.h>
 
+#include "splitter.h"
 #include "error_codes.h"
 #include "graph.h"
-#include "splitter.h"
+#include "dijkstra.h"
 #include "bfs.h"
-
 
 void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int starting_node, int end_node) {
     
     int rows = graph->rows;
     int columns = graph->columns;
-
-    for(int i = 0; i < rows * columns; i++)
-        fprintf(stderr, "prev[%d] = %d\n", i, primary_prev[i]);
 
     //our primary_prev table contains ancestors, so we should start from the end
     //reversing start and end
@@ -40,12 +39,10 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
     //looking if we have to deal with an edge case or normal case
     while( current_node != e_node ) {
         if( ((current_node % columns) == (columns - 1)) || ((current_node < columns)) ) {   //do nothing if on right or top edge
-            fprintf(stderr, "no elo\n");
             current_node = primary_prev[current_node];
         }
         else {
-            fprintf(stderr, "~ NORMAL CASE ~\n");
-            mode = NORMAL_CASE;                                                             //if a node is not a part of the right or top edge it's a normal case
+            mode = NORMAL_CASE;     //if a node is not a part of the right or top edge it's a normal case
             break;
         }
     }
@@ -60,7 +57,6 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
             if( (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) { 
                 graph->edge[current_node][i].node = DEFAULT_NODE;
                 graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
-                fprintf(stderr, "START: Wyciumkano: %d\n", node_to_cut);
                 for( int j = 0; j < ADJ_LIST_COLS; j++ )
                     if( graph->edge[node_to_cut][j].node == current_node ) {
                         graph->edge[node_to_cut][j].node = DEFAULT_NODE;
@@ -86,7 +82,6 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                     if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) { 
                         graph->edge[current_node][i].node = DEFAULT_NODE;       //cutting node
                         graph->edge[current_node][i].weight = DEFAULT_WEIGHT;   //cutting node
-                        fprintf(stderr, "UP: Wyciumkano: %d\n", node_to_cut);
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
                             if( graph->edge[node_to_cut][j].node == current_node ) {    //cutting node but from the second side
                                 graph->edge[node_to_cut][j].node = DEFAULT_NODE;    
@@ -117,7 +112,6 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                     if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE)) {
                         graph->edge[current_node][i].node = DEFAULT_NODE;
                         graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
-                        fprintf(stderr, "RIGHT: Wyciumkano: %d\n", node_to_cut);
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
                             if( graph->edge[node_to_cut][j].node == current_node ) {
                                 graph->edge[node_to_cut][j].node = DEFAULT_NODE;
@@ -150,7 +144,6 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                     if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) {
                         graph->edge[current_node][i].node = DEFAULT_NODE;
                         graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
-                        fprintf(stderr, "DOWN: Wyciumkano: %d\n", node_to_cut);
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
                             if( graph->edge[node_to_cut][j].node == current_node ) {
                                 graph->edge[node_to_cut][j].node = DEFAULT_NODE;
@@ -181,7 +174,6 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                     if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) {
                         graph->edge[current_node][i].node = DEFAULT_NODE;
                         graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
-                        fprintf(stderr, "LEFT: Wyciumkano: %d\n", node_to_cut);
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
                             if( graph->edge[node_to_cut][j].node == current_node ) {
                                 graph->edge[node_to_cut][j].node = DEFAULT_NODE;
@@ -214,7 +206,6 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
             if( (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) { 
                 graph->edge[e_node][i].node = DEFAULT_NODE;
                 graph->edge[e_node][i].weight = DEFAULT_WEIGHT;
-                fprintf(stderr, "START: Wyciumkano: %d\n", node_to_cut);
                 for( int j = 0; j < ADJ_LIST_COLS; j++ )
                     if( graph->edge[node_to_cut][j].node == e_node ) {
                         graph->edge[node_to_cut][j].node = DEFAULT_NODE;
@@ -226,7 +217,6 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
     }
     else {
         while( current_node != e_node ) {
-            fprintf(stderr, "~~~~~~~~~~~~~~~~~EDGE CASE ~~~~~~~~~~~~~~~~~~~~\n");
             following_node = primary_prev[current_node];
 
             way = direction( rows, columns, current_node, following_node );
@@ -238,7 +228,6 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                     if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) { 
                         graph->edge[current_node][i].node = DEFAULT_NODE;
                         graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
-                        fprintf(stderr, "UP: Wyciumkano: %d\n", node_to_cut);
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
                             if( graph->edge[node_to_cut][j].node == current_node ) {
                                 graph->edge[node_to_cut][j].node = DEFAULT_NODE;
@@ -253,7 +242,6 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                     if( (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) { 
                         graph->edge[following_node][i].node = DEFAULT_NODE;
                         graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
-                        fprintf(stderr, "UP: Wyciumkano: %d\n", node_to_cut);
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
                             if( graph->edge[node_to_cut][j].node == following_node ) {
                                 graph->edge[node_to_cut][j].node = DEFAULT_NODE;
@@ -270,7 +258,6 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                     if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE)) {
                         graph->edge[current_node][i].node = DEFAULT_NODE;
                         graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
-                        fprintf(stderr, "RIGHT: Wyciumkano: %d\n", node_to_cut);
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
                             if( graph->edge[node_to_cut][j].node == current_node ) {
                                 graph->edge[node_to_cut][j].node = DEFAULT_NODE;
@@ -303,7 +290,6 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                     if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) {
                         graph->edge[current_node][i].node = DEFAULT_NODE;
                         graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
-                        fprintf(stderr, "DOWN: Wyciumkano: %d\n", node_to_cut);
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
                             if( graph->edge[node_to_cut][j].node == current_node ) {
                                 graph->edge[node_to_cut][j].node = DEFAULT_NODE;
@@ -334,7 +320,6 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                     if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) {
                         graph->edge[current_node][i].node = DEFAULT_NODE;
                         graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
-                        fprintf(stderr, "LEFT: Wyciumkano: %d\n", node_to_cut);
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
                             if( graph->edge[node_to_cut][j].node == current_node ) {
                                 graph->edge[node_to_cut][j].node = DEFAULT_NODE;
@@ -349,7 +334,6 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                     if( (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) {
                         graph->edge[following_node][i].node = DEFAULT_NODE;
                         graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
-                        fprintf(stderr, "LEFT: Wyciumkano: %d\n", node_to_cut);
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
                             if( graph->edge[node_to_cut][j].node == following_node ) {
                                 graph->edge[node_to_cut][j].node = DEFAULT_NODE;
@@ -394,14 +378,58 @@ int is_on_the_edge(graph_t * graph, int node) {
     for(int i = 0; i < ADJ_LIST_COLS; i++)
         if(graph->edge[node][i].node != DEFAULT_NODE)
             k++;
-        
-    fprintf(stderr, "k: %d\n", k);
 
-    if( k != ADJ_LIST_COLS ) {
-        fprintf(stderr, "edge_node\n");
+    if( k != ADJ_LIST_COLS )
         return EDGE_NODE;
-    }
     
     return NOT_EDGE_NODE;
+}
 
+// clear interface for splitting graph
+void split_graph(graph_t * graph, int subgraphs) {
+
+    char * primary_seen = malloc(sizeof(char) * graph->nodes);  //seen table which will be gathering informations from bfs seen
+    int * primary_prev = malloc(sizeof(int) * graph->nodes);    //prev table which will be gathering informations from dijkstra
+    
+    int begin_node, end_node, starting_node;
+
+    srand(time(NULL));
+
+    for(int i = 1; i < subgraphs; i++) {
+        //fprintf(stderr, "%d SPLIT\n", i);
+        memset(primary_seen, UNSEEN_NODE, graph->nodes);    //setting every node as unseen
+
+        for( int j = 0; j < graph->nodes; j++)              //change value of the whole primary array to DEFAULT_NODE
+            primary_prev[j] = DEFAULT_NODE;            
+            
+        //fprintf(stderr, "set_up\n");
+
+        starting_node = rand() % graph->nodes;              //looking for a starting node 
+
+        while( !is_on_the_edge( graph, starting_node ) ) {
+            starting_node = rand() % graph->nodes;          //looking for a starting node on the edge
+            //fprintf(stderr, "starting node\n");
+        }
+
+        bfs(graph, starting_node, SPLIT_MODE, primary_seen);  //let's see if they're connected
+
+        // tests
+        /*for(int i = 0; i < graph->nodes; i++)
+            printf("%d\n", primary_seen[i]);*/
+
+        //looking for end node through bfs table
+        do {
+            end_node = rand() % graph->nodes;
+            //fprintf(stderr, "looking for end node\n");
+        } while( !(is_on_the_edge( graph, end_node ) && (primary_seen[end_node] == SEEN_NODE )));
+
+        //fprintf(stderr, "~~ there is connection!\n");
+        //printf("starting dijkstra from %d to %d\n", starting_node, end_node);
+        dijkstra(graph, starting_node, end_node, DONT_SHOW_BACKTRACE, primary_prev, SPLIT_MODE);  //look for the shortest path
+        //printf("starting splitter\n");
+        splitter(graph, primary_prev, primary_seen, starting_node, end_node);   //split  
+    }
+
+    free(primary_seen);                                         //free memory from seen (bfs)
+    free(primary_prev);                                         //free memory from dijkstra prev
 }
