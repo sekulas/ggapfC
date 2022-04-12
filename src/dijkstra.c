@@ -2,12 +2,10 @@
 #include <stdio.h>
 #include <float.h>
 
+#include "dijkstra.h"
 #include "error_codes.h"
 #include "graph.h"
 #include "priority_queue.h"
-#include "reader.h"
-#include "dijkstra.h"
-#include "splitter.h"
 
 // for tests only
 void print_distances_arr(double * arr, int n) {
@@ -29,7 +27,7 @@ void backtrace(double * distance, int * prev, int begin, int end) {
 
     // show shortest path or info that there is no shortest path
     if(distance[end] >= FLT_MAX) {
-        printf("\nnShortest path = INFINITY\nThere is no path between given vertices\n");
+        printf("\nShortest path = INFINITY\nThere is no path between given vertices\n");
         return;
     } else 
         printf("\nShortest path = %g\n", distance[end]);

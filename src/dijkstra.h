@@ -9,6 +9,11 @@
 #define PREV_UNKNOWN   -1
 #define BASIC_DIJKSTRA  0
 
+#define SHOW_BACKTRACE      1
+#define DONT_SHOW_BACKTRACE 0
+
+#define SPLIT_MODE      1
+#define NOT_SPLIT_MODE  0
 
 // shows the course of the shortest path
 void backtrace(double * distance, int * prev, int begin, int end);

@@ -23,7 +23,4 @@
 #define FROM_WEIGHT_FLAG 'f'
 #define TO_WEIGHT_FLAG 't'
 
-#define SHOW_BACKTRACE      1
-#define DONT_SHOW_BACKTRACE 0
-
 #endif
