@@ -2,11 +2,12 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+
+#include "bfs.h"
+#include "error_codes.h"
 #include "graph.h"
 #include "queue.h"
-#include "error_codes.h"
-#include "bfs.h"
-#include "splitter.h"
+
 //bfs - returns 0 if graphs is connected, 1 if not
 int bfs(graph_t * graph, int starting_node, int mode, char * primary_seen) {
 
@@ -35,15 +36,12 @@ int bfs(graph_t * graph, int starting_node, int mode, char * primary_seen) {
         }
 
         connected_graph = is_graph_connected( graph, seen );
-        if( connected_graph ) {
-            
-            //if we are in a SPLIT_MODE we need a seen table for future operations
-            fprintf(stderr, "CLONING PRIMARY_SEEN BEEP                              ****\n");
-            if(mode == SPLIT_MODE)
-                for(int i = 0; i < graph->nodes; i++)
-                    primary_seen[i] = seen[i];  
         
-        }
+        //if we are in a SPLIT_MODE we need a seen table for future operations
+        if(mode == SPLIT_MODE)
+            for(int i = 0; i < graph->nodes; i++)
+                primary_seen[i] = seen[i];  
+        
 
         free(seen);
         return connected_graph;

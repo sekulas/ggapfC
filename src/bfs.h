@@ -10,6 +10,9 @@
 #define UNSEEN_NODE '0'         //0 if node has not been seen in seen array
 #define IN_QUEUE_NODE '2'       //2 if node has been added to queue
 
+#define SPLIT_MODE      1
+#define NOT_SPLIT_MODE  0
+
 //bfs - returns 0 if graphs is connected, 1 if not
 int bfs(graph_t * graph, int starting_node, int mode, char * primary_seen);
 
