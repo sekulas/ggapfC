@@ -3,6 +3,8 @@ all:
 
 spliting:
 	gcc src/main.c src/queue.c src/bfs.c src/reader.c src/graph.c src/splitter.c -lm -ggdb
+generate:
+	./a.out w 20 20 1.0 2.0 data/split1.txt
 
 
 testnsp1:
@@ -11,7 +13,7 @@ testsp1:
 	./a.out -s data/graph1 -b 1 -e 2
 
 online:
-	gcc src/tester.c src/graph.c src/reader.c src/dijkstra.c src/priority_queue.c src/bfs.c src/queue.c src/splitter.c -lm -ggdb
+	gcc src/tester.c src/graph.c src/reader.c src/dijkstra.c src/writer.c src/priority_queue.c src/bfs.c src/queue.c src/splitter.c -lm -ggdb
 graph:
 	./a.out c data/split1.txt pokaz.graphml
 splitgraph1:

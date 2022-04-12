@@ -10,10 +10,7 @@
 #include "bfs.h"
 
 /* USAGE:
-<<<<<<< HEAD
-=======
     cc src/tester.c src/reader.c src/dijkstra.c src/priority_queue.c src/graph.c -lm
->>>>>>> splitter
     cc src/tester.c src/reader.c src/writer.c src/dijkstra.c src/priority_queue.c src/graph.c -o tester -lm
     ./a.out <mode> <params..>
     ./a.out r filename begin_node end_node                  - reads and shows graph from file and finds shortest path
@@ -105,17 +102,27 @@ int main(int argc, char ** argv) {
 
                     fprintf(stderr, "set_up\n");
 
+                    starting_node = rand() % graph->nodes;      //looking for a starting node 
 
-                    starting_node = rand() % graph->nodes;      //looking for a starting
-                    end_node = rand() % graph->nodes;           //looking for a end node
+                    while( is_on_the_edge( graph, starting_node )  == NOT_EDGE_NODE ) {
+                        starting_node = rand() % graph->nodes;      //looking for a starting node on the edge
+                        fprintf(stderr, "starting node\n");
+                    }
 
-                    fprintf(stderr, "LOOP starting_node: %d          end_node: %d\n", starting_node, end_node);
+                    bfs(graph, starting_node, SPLIT_MODE, primary_seen);  //let's see if they're connected
 
-                    if(starting_node != end_node)              //is not starting node same as end node
-                        if( is_on_the_edge(graph, starting_node) && is_on_the_edge(graph, end_node) ) { //are they on the edges
-                            fprintf(stderr, "bfs() time B)\n");
-                            bfs(graph, starting_node, SPLIT_MODE, primary_seen);  //let's see if they're connected
+                    while(1) {
+
+                        end_node = rand() % graph->nodes;
+
+                        if( is_on_the_edge( graph, end_node ) && primary_seen[end_node] == SEEN_NODE  ) {
+                            fprintf(stderr, "end node\n");
+                            break;
                         }
+
+                        fprintf(stderr, "looking for end node\n");
+
+                    }
 
                     if(primary_seen[end_node] == SEEN_NODE) {                                  //if they're connected
                         fprintf(stderr, "~~ jest koneksja!                          ######\n");

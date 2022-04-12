@@ -263,6 +263,70 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                 }
 
             }
+            else if( way == RIGHT ) {
+                //looking for the down connection to break
+                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
+                    node_to_cut = current_node - columns;
+                    if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE)) {
+                        graph->edge[current_node][i].node = DEFAULT_NODE;
+                        graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
+                        fprintf(stderr, "RIGHT: Wyciumkano: %d\n", node_to_cut);
+                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
+                            if( graph->edge[node_to_cut][j].node == current_node ) {
+                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
+                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
+                            }
+                    }
+                }
+
+                //deleting connection from previously deleted node
+                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
+                    node_to_cut = following_node - columns;
+                    if( (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE)) {
+                        graph->edge[following_node][i].node = DEFAULT_NODE;
+                        graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
+                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
+                            if( graph->edge[node_to_cut][j].node == following_node ) {
+                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
+                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
+                            }
+                    }
+                }
+                
+
+
+            }
+            else if( way == DOWN ) {
+                //looking for the down connection to break
+                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
+                    node_to_cut = current_node + 1;
+                    if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) {
+                        graph->edge[current_node][i].node = DEFAULT_NODE;
+                        graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
+                        fprintf(stderr, "DOWN: Wyciumkano: %d\n", node_to_cut);
+                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
+                            if( graph->edge[node_to_cut][j].node == current_node ) {
+                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
+                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
+                            }
+                    }
+                }
+
+                //deleting connection from previously deleted node
+                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
+                    node_to_cut = following_node + 1;
+                    if( (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) {
+                        graph->edge[following_node][i].node = DEFAULT_NODE;
+                        graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
+                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
+                            if( graph->edge[node_to_cut][j].node == following_node ) {
+                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
+                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
+                            }
+                    }
+                }
+                        
+            }
             else if( way == LEFT ) {
                 //looking for the down connection to break
                 for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
