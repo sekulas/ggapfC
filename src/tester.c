@@ -10,8 +10,7 @@
 #include "bfs.h"
 
 /* USAGE:
-    cc src/tester.c src/reader.c src/dijkstra.c src/priority_queue.c src/graph.c -lm
-    cc src/tester.c src/reader.c src/writer.c src/dijkstra.c src/priority_queue.c src/graph.c -o tester -lm
+    cc src/tester.c src/reader.c src/writer.c src/dijkstra.c src/priority_queue.c src/graph.c src/bfs.c src/splitter.c src/queue.c -o tester -lm
     ./a.out <mode> <params..>
     ./a.out r filename begin_node end_node                  - reads and shows graph from file and finds shortest path
     ./a.out w rows cols from_weight to_weight filename      - generates graph with given params
@@ -26,7 +25,7 @@ void show_help() {
         "\t./a.out r filename begin_node end_node                  - reads and shows graph from file and finds shortest path\n"
         "\t./a.out w rows cols from_weight to_weight filename      - generates graph with given params\n"
         "\t./a.out c source destination.graphml                    - converts our file format to graphml file\n"
-        "\t./a.out s source destination.graphml to_split           - converts file and splits it"
+        "\t./a.out s source destination.graphml to_split           - converts file and splits it\n"
     );
 }
 

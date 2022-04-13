@@ -5,12 +5,6 @@
 #define QUEUE_NOT_EMPTY 0;
 //queue base
 
-/* 
-konwencja w C jest taka ze przy zdefiniowanych typach daje sie _t
-tzn pasowaloby zamienic queue na queue_t i queue_ptr_t na np queue_ptr_ttr_t
-* poprawilem ifndef
-*/
-
 typedef struct node {
     int node;
     struct node * next;

@@ -1,8 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
-#include "graph.h"
+
 #include "reader.h"
+#include "graph.h"
 #include "error_codes.h"
 
 // returns pointer to graph structure on success end error code to shell in other case
@@ -27,8 +28,7 @@ graph_t * read_from_file(char * filename) {
         fprintf(stderr, "read_from_file(): wrong data format!\n");
         exit(READER_WRONG_FORMAT);
     }
-
-    //printf("%d %d\n", rows, columns); // for tests
+    
     graph = init_graph(rows, columns);
 
     // skipping additional parameters for compatibility with java version
@@ -45,8 +45,6 @@ graph_t * read_from_file(char * filename) {
             exit(READER_WRONG_FORMAT);
         }
 
-        //printf("%d:%g ", node, weight); // for tests
-
         // validate and add values to graph
         add_edge(graph, i, node, weight);
 
@@ -62,11 +60,3 @@ graph_t * read_from_file(char * filename) {
     fclose(in);
     return graph;
 }
-
-// main stands here only for tests
-// cc src/reader.c src/graph.c
-/*int main(int argc, char **argv) {
-    graph_t * graph = read_from_file("data/graph1");
-    show_graph(graph, stdout);
-    return 0;
-}*/

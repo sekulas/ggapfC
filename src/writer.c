@@ -45,8 +45,6 @@ void save_to_graphml(graph_t * graph, char * filename) {
     filename_graphml = strcpy(filename_graphml, filename);
     filename_graphml = strcat(filename_graphml, ".graphml");
 
-    printf("%s\n", filename_graphml);
-
     // try open file for writing
     FILE * out = NULL;
     out = fopen(filename_graphml, "w");

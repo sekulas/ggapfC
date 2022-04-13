@@ -3,7 +3,7 @@
 
 #include "graph.h"
 
-#define PQ_START_SIZE 8 // temporarily 8, check how many realloactions needed
+#define PQ_START_SIZE 32 // temporarily 32, check how many realloactions needed
 
 // stores priority queue
 typedef struct PQ {

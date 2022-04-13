@@ -19,16 +19,12 @@ queue_ptr_t queue_add(queue_ptr_t q, int node) {
     queue_ptr_t iterator = q;
 
     //empty queue moment
-    if(iterator == NULL) {
-        //fprintf(stderr, "empty queue... not for me!\n"); //test
+    if(iterator == NULL)
         return new;
-    } 
 
     //going to the end of the list
     while(iterator->next != NULL)
         iterator = iterator->next;
-
-    //fprintf(stderr, "another one added :D\n"); //test
 
     iterator->next = new;
 

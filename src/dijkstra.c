@@ -7,17 +7,6 @@
 #include "graph.h"
 #include "priority_queue.h"
 
-// for tests only
-void print_distances_arr(double * arr, int n) {
-    for(int i = 0; i < n; i++)
-        printf("%d: %f\n", i, arr[i]);
-}
-void print_prev_arr(int * arr, int n) {
-    for(int i = 0; i < n; i++)
-        printf("%d: %d\n", i, arr[i]);
-}
-
-
 // shows the course of the shortest path
 void backtrace(double * distance, int * prev, int begin, int end) {
     int current_vertex;
