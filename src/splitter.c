@@ -54,7 +54,7 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
         //starting node connections break
         for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
             node_to_cut = graph->edge[current_node][i].node;
-            if( (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) { 
+            if( (node_to_cut != DEFAULT_NODE) && (road[node_to_cut] == NOT_ON_THE_ROAD)) { 
                 graph->edge[current_node][i].node = DEFAULT_NODE;
                 graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
                 for( int j = 0; j < ADJ_LIST_COLS; j++ )
@@ -79,7 +79,7 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                 for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
                     node_to_cut = current_node + 1;            //setting current node to be cut
                     //looking if (this node of the graph need to be cut) && (if node to cut is not a part of the road) && (if there is node to cut)
-                    if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) { 
+                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) { 
                         graph->edge[current_node][i].node = DEFAULT_NODE;       //cutting node
                         graph->edge[current_node][i].weight = DEFAULT_WEIGHT;   //cutting node
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
@@ -93,7 +93,7 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                 //deleting connection from previously deleted node
                 for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
                     node_to_cut = following_node + 1;
-                    if( (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) { 
+                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) { 
                         graph->edge[following_node][i].node = DEFAULT_NODE;
                         graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
@@ -109,7 +109,7 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                 //looking for the down connection to break
                 for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
                     node_to_cut = current_node + columns;
-                    if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE)) {
+                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
                         graph->edge[current_node][i].node = DEFAULT_NODE;
                         graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
@@ -123,7 +123,7 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                 //deleting connection from previously deleted node
                 for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
                     node_to_cut = following_node + columns;
-                    if( (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE)) {
+                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
                         graph->edge[following_node][i].node = DEFAULT_NODE;
                         graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
@@ -141,7 +141,7 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                 //looking for the down connection to break
                 for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
                     node_to_cut = current_node - 1;
-                    if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) {
+                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
                         graph->edge[current_node][i].node = DEFAULT_NODE;
                         graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
@@ -155,7 +155,7 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                 //deleting connection from previously deleted node
                 for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
                     node_to_cut = following_node - 1;
-                    if( (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) {
+                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
                         graph->edge[following_node][i].node = DEFAULT_NODE;
                         graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
@@ -171,7 +171,7 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                 //looking for the down connection to break
                 for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
                     node_to_cut = current_node - columns;
-                    if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) {
+                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
                         graph->edge[current_node][i].node = DEFAULT_NODE;
                         graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
@@ -185,7 +185,7 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                 //deleting connection from previously deleted node
                 for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
                     node_to_cut = following_node - columns;
-                    if( (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) {
+                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
                         graph->edge[following_node][i].node = DEFAULT_NODE;
                         graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
@@ -203,7 +203,7 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
 
         for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
             node_to_cut = graph->edge[e_node][i].node;
-            if( (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) { 
+            if( (node_to_cut != DEFAULT_NODE) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) { 
                 graph->edge[e_node][i].node = DEFAULT_NODE;
                 graph->edge[e_node][i].weight = DEFAULT_WEIGHT;
                 for( int j = 0; j < ADJ_LIST_COLS; j++ )
@@ -225,7 +225,7 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                 //looking for the right connection to break
                 for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
                     node_to_cut = current_node - 1;
-                    if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) { 
+                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) { 
                         graph->edge[current_node][i].node = DEFAULT_NODE;
                         graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
@@ -239,7 +239,7 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                 //deleting connection from previously deleted node
                 for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
                     node_to_cut = following_node - 1;
-                    if( (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) { 
+                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) { 
                         graph->edge[following_node][i].node = DEFAULT_NODE;
                         graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
@@ -255,7 +255,7 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                 //looking for the down connection to break
                 for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
                     node_to_cut = current_node - columns;
-                    if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE)) {
+                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
                         graph->edge[current_node][i].node = DEFAULT_NODE;
                         graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
@@ -269,7 +269,7 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                 //deleting connection from previously deleted node
                 for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
                     node_to_cut = following_node - columns;
-                    if( (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE)) {
+                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
                         graph->edge[following_node][i].node = DEFAULT_NODE;
                         graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
@@ -287,7 +287,7 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                 //looking for the down connection to break
                 for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
                     node_to_cut = current_node + 1;
-                    if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) {
+                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
                         graph->edge[current_node][i].node = DEFAULT_NODE;
                         graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
@@ -301,7 +301,7 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                 //deleting connection from previously deleted node
                 for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
                     node_to_cut = following_node + 1;
-                    if( (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) {
+                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
                         graph->edge[following_node][i].node = DEFAULT_NODE;
                         graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
@@ -317,7 +317,7 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                 //looking for the down connection to break
                 for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
                     node_to_cut = current_node + columns;
-                    if( (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) {
+                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
                         graph->edge[current_node][i].node = DEFAULT_NODE;
                         graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
@@ -331,7 +331,7 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
                 //deleting connection from previously deleted node
                 for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
                     node_to_cut = following_node + columns;
-                    if( (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) && (node_to_cut != DEFAULT_NODE) ) {
+                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
                         graph->edge[following_node][i].node = DEFAULT_NODE;
                         graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
                         for( int j = 0; j < ADJ_LIST_COLS; j++ )
@@ -347,7 +347,8 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
 
         current_node = primary_prev[current_node];
     }
-
+    
+    free(road);
 }
 
 //direction guesser
