@@ -147,7 +147,7 @@ int main(int argc, char ** argv) {
     }
     // add bfs here or something
 
-    free_graph(graph);
+    //free_graph(graph);
 
     return 0;
 }

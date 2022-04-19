@@ -76,125 +76,36 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
 
             if( way == UP ) {
                 //looking for the right connection to break
-                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
-                    node_to_cut = current_node + 1;            //setting current node to be cut
-                    //looking if (this node of the graph need to be cut) && (if node to cut is not a part of the road) && (if there is node to cut)
-                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) { 
-                        graph->edge[current_node][i].node = DEFAULT_NODE;       //cutting node
-                        graph->edge[current_node][i].weight = DEFAULT_WEIGHT;   //cutting node
-                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
-                            if( graph->edge[node_to_cut][j].node == current_node ) {    //cutting node but from the second side
-                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;    
-                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
-                        }
-                    }
-                }
+                cutter( graph, current_node, current_node + 1, road);
 
                 //deleting connection from previously deleted node
-                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
-                    node_to_cut = following_node + 1;
-                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) { 
-                        graph->edge[following_node][i].node = DEFAULT_NODE;
-                        graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
-                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
-                            if( graph->edge[node_to_cut][j].node == following_node ) {
-                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
-                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
-                            }
-                    }
-                }
+                cutter( graph, following_node, following_node + 1, road);
 
             }
             else if( way == RIGHT ) {
                 //looking for the down connection to break
-                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
-                    node_to_cut = current_node + columns;
-                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
-                        graph->edge[current_node][i].node = DEFAULT_NODE;
-                        graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
-                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
-                            if( graph->edge[node_to_cut][j].node == current_node ) {
-                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
-                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
-                            }
-                    }
-                }
+                cutter( graph, current_node, current_node + columns, road);
 
-                //deleting connection from previously deleted node
-                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
-                    node_to_cut = following_node + columns;
-                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
-                        graph->edge[following_node][i].node = DEFAULT_NODE;
-                        graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
-                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
-                            if( graph->edge[node_to_cut][j].node == following_node ) {
-                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
-                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
-                            }
-                    }
-                }
                 
+                //deleting connection from previously deleted node
+                cutter( graph, following_node, following_node + columns, road);
 
 
             }
             else if( way == DOWN ) {
                 //looking for the down connection to break
-                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
-                    node_to_cut = current_node - 1;
-                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
-                        graph->edge[current_node][i].node = DEFAULT_NODE;
-                        graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
-                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
-                            if( graph->edge[node_to_cut][j].node == current_node ) {
-                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
-                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
-                            }
-                    }
-                }
+                cutter( graph, current_node, current_node - 1, road);
 
                 //deleting connection from previously deleted node
-                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
-                    node_to_cut = following_node - 1;
-                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
-                        graph->edge[following_node][i].node = DEFAULT_NODE;
-                        graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
-                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
-                            if( graph->edge[node_to_cut][j].node == following_node ) {
-                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
-                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
-                            }
-                    }
-                }
+                cutter( graph, following_node, following_node - 1, road);
                         
             }
             else if( way == LEFT ) {
                 //looking for the down connection to break
-                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
-                    node_to_cut = current_node - columns;
-                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
-                        graph->edge[current_node][i].node = DEFAULT_NODE;
-                        graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
-                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
-                            if( graph->edge[node_to_cut][j].node == current_node ) {
-                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
-                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
-                            }
-                    }
-                }
+                cutter( graph, current_node, current_node - columns, road);
 
                 //deleting connection from previously deleted node
-                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
-                    node_to_cut = following_node - columns;
-                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
-                        graph->edge[following_node][i].node = DEFAULT_NODE;
-                        graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
-                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
-                            if( graph->edge[node_to_cut][j].node == following_node ) {
-                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
-                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
-                            }
-                    }
-                }
+                cutter( graph, following_node, following_node - columns, road);
                         
             }
             
@@ -222,126 +133,36 @@ void splitter(graph_t * graph, int * primary_prev, char * primary_seen, int star
             way = direction( rows, columns, current_node, following_node );
 
             if( way == UP ) {
-                //looking for the right connection to break
-                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
-                    node_to_cut = current_node - 1;
-                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) { 
-                        graph->edge[current_node][i].node = DEFAULT_NODE;
-                        graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
-                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
-                            if( graph->edge[node_to_cut][j].node == current_node ) {
-                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
-                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
-                            }
-                    }
-                }
+                //looking for the down connection to break
+                cutter( graph, current_node, current_node - 1, road);
 
                 //deleting connection from previously deleted node
-                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
-                    node_to_cut = following_node - 1;
-                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) { 
-                        graph->edge[following_node][i].node = DEFAULT_NODE;
-                        graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
-                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
-                            if( graph->edge[node_to_cut][j].node == following_node ) {
-                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
-                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
-                            }
-                    }
-                }
+                cutter( graph, following_node, following_node - 1, road);
 
             }
             else if( way == RIGHT ) {
                 //looking for the down connection to break
-                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
-                    node_to_cut = current_node - columns;
-                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
-                        graph->edge[current_node][i].node = DEFAULT_NODE;
-                        graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
-                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
-                            if( graph->edge[node_to_cut][j].node == current_node ) {
-                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
-                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
-                            }
-                    }
-                }
+                cutter( graph, current_node, current_node - columns, road);
 
                 //deleting connection from previously deleted node
-                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
-                    node_to_cut = following_node - columns;
-                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
-                        graph->edge[following_node][i].node = DEFAULT_NODE;
-                        graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
-                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
-                            if( graph->edge[node_to_cut][j].node == following_node ) {
-                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
-                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
-                            }
-                    }
-                }
-                
-
+                cutter( graph, following_node, following_node - columns, road);
 
             }
             else if( way == DOWN ) {
-                //looking for the down connection to break
-                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
-                    node_to_cut = current_node + 1;
-                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
-                        graph->edge[current_node][i].node = DEFAULT_NODE;
-                        graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
-                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
-                            if( graph->edge[node_to_cut][j].node == current_node ) {
-                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
-                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
-                            }
-                    }
-                }
+                //looking for the right connection to break
+                cutter( graph, current_node, current_node + 1, road);
 
                 //deleting connection from previously deleted node
-                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
-                    node_to_cut = following_node + 1;
-                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
-                        graph->edge[following_node][i].node = DEFAULT_NODE;
-                        graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
-                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
-                            if( graph->edge[node_to_cut][j].node == following_node ) {
-                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
-                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
-                            }
-                    }
-                }
+                cutter( graph, following_node, following_node + 1, road);
                         
             }
             else if( way == LEFT ) {
                 //looking for the down connection to break
-                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
-                    node_to_cut = current_node + columns;
-                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
-                        graph->edge[current_node][i].node = DEFAULT_NODE;
-                        graph->edge[current_node][i].weight = DEFAULT_WEIGHT;
-                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
-                            if( graph->edge[node_to_cut][j].node == current_node ) {
-                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
-                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
-                            }
-                    }
-                }
+                cutter( graph, current_node, current_node + columns, road);
 
+                
                 //deleting connection from previously deleted node
-                for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
-                    node_to_cut = following_node + columns;
-                    if( (node_to_cut != DEFAULT_NODE) && (graph->edge[following_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) {
-                        graph->edge[following_node][i].node = DEFAULT_NODE;
-                        graph->edge[following_node][i].weight = DEFAULT_WEIGHT;
-                        for( int j = 0; j < ADJ_LIST_COLS; j++ )
-                            if( graph->edge[node_to_cut][j].node == following_node ) {
-                                graph->edge[node_to_cut][j].node = DEFAULT_NODE;
-                                graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
-                            }
-                    }
-                }
-                        
+                cutter( graph, following_node, following_node + columns, road);   
             }
         }
 
@@ -368,6 +189,23 @@ int direction( int rows, int columns, int current_node, int following_node ) {
     if( following_node == ( current_node - 1 ) )
         return LEFT;
 
+
+}
+
+void cutter(graph_t * graph, int current_node, int node_to_cut, int * road) {
+
+    for( int i = 0; i < ADJ_LIST_COLS; i++ ) {
+        //looking if (this node of the graph need to be cut) && (if node to cut is not a part of the road) && (if there is node to cut)
+        if( (node_to_cut != DEFAULT_NODE) && (graph->edge[current_node][i].node == node_to_cut) && (road[node_to_cut] == NOT_ON_THE_ROAD) ) { 
+            graph->edge[current_node][i].node = DEFAULT_NODE;       //cutting node
+            graph->edge[current_node][i].weight = DEFAULT_WEIGHT;   //cutting node
+            for( int j = 0; j < ADJ_LIST_COLS; j++ )
+                if( graph->edge[node_to_cut][j].node == current_node ) {    //cutting node but from the second side
+                    graph->edge[node_to_cut][j].node = DEFAULT_NODE;    
+                    graph->edge[node_to_cut][j].weight = DEFAULT_WEIGHT;
+            }
+        }
+    }
 
 }
 

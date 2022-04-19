@@ -27,4 +27,7 @@ int is_on_the_edge(graph_t * graph, int node);
 // clear interface for splitting graph
 void split_graph(graph_t * graph, int subgraphs);
 
+//cuts nearby connections
+void cutter(graph_t * graph, int current_node, int node_to_cut, int * road);
+
 #endif
