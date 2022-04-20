@@ -134,13 +134,6 @@ int main (int argc, char **argv) {
         // the functions that generate the graph terminate the program when an error is encountered
         // so no need to check if graph is NULL    
 
-    primary_seen = malloc(sizeof(char) * graph->nodes);                 //seen table which will be gathering informations from bfs seen
-    primary_prev = malloc(sizeof(int) * graph->nodes);    //prev table which will be gathering informations from dijkstra
-    memset(primary_seen, UNSEEN_NODE, graph->nodes);        //setting every node as unseen
-
-    for( int j = 0; j < graph->nodes; j++)      //change value of the whole primary array to DEFAULT_NODE
-        primary_prev[j] = DEFAULT_NODE;  
-        
     // checking if graph is connected
     if(bfs(graph, 0, NOT_SPLIT_MODE, NULL) == CONNECTED_GRAPH) {
         printf("Graph is connected!\n");
