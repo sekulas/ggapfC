@@ -36,18 +36,18 @@ clean_data:
 #TESTY
 
 #Reakcja na niepoprawne parametry wywołania.
-test1:
+test1: all
 	./ggapf -x 10 -y 10 -f 0 -t 10 -n 1 -b 0 -r data/sample10x10_nosplit
 
 #Wczytywanie danych i reakcji na zły format danych w pliku.	
-test2:
+test2: all
 	./ggapf -s data/dane_ktorych_nie_ma -n 2 -b 0 -e 99 -r data/sample10x10_split2
 
 #Definiowanie przez program grafu spójnego oraz niespójnego.
-test3:
+test3: all
 	./ggapf -s data/sample10x10_nosplit -n 2 -b 0 -e 99 -r data/sample10x10_split2
 
 #Sprawdzanie przez program spójności grafu.
-test4:
+test4: all
 	./ggapf -x 10 -y 10 -f 0 -t 10 -n 1 -b 0 -e 99 -r data/sample10x10_nosplit
 
