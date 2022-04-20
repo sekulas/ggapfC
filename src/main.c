@@ -31,11 +31,6 @@ int main (int argc, char **argv) {
     int nodes;
     graph_t *graph;
 
-    int begin_node, end_node;
-    char * primary_seen = NULL;                 //seen table which will be gathering informations from bfs seen
-    int * primary_prev = NULL;                  //prev table which will be gathering informations from dijkstra
-    int starting_node;
-
     // help detection
     if( argc == 1 || (argc == 2 && (!strcmp("-?", argv[1]) || !strcmp("-help", argv[1]) || !strcmp("--help", argv[1])))) {
         show_help();
