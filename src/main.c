@@ -155,7 +155,8 @@ int main (int argc, char **argv) {
 
     // additional feature - prints graph in graphml file format
     // you can visualise it here: https://graphonline.ru/en/
-    save_to_graphml(graph, result_file);
+    if(graph->nodes <= 1000000) // for bigger graphs graphml file is too large
+        save_to_graphml(graph, result_file);
 
     free_graph(graph);
 
