@@ -1,5 +1,6 @@
 # What is ggapfC
-ggapfC is a project which was created during my studies, there has also been created an upgraded version of this project written in JAVA with GUI (javaFX) (https://github.com/ochnios/ggapf)
+GGAPF - Graph Generator And Path Finder - JIMP project (Programming Languages and Methods course).
+ggapfC is a project which was created during 2nd term of my CS studies, there is also an upgraded version of this project written in JAVA with GUI (javaFX), which uses MAVEN (https://github.com/ochnios/ggapf)
 ## What you can do with ggapfC
 1. generate a graph with a given number of columns and rows of nodes and weights of random edges in a given range of values.
 2. save such a graph to a file with a fixed format
